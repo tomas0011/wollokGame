@@ -37,7 +37,7 @@ Para recuperar energía, el personaje tiene que agarrar objetos que le otorguen 
 
 En el nivel 2 el objetivo del personaje ganar dinero. El personaje gana dinero cuando colisiona con los objeto que otorgan dinero. Al colisionar con un objeto que otorga dinero el personaje acumula el dinero que le otorga, el objeto desaparece del tablero y el personaje pierde salud. 
 
-Un detalle **muy importante**: debe aparecer una puerta de salida para finalizar el nivel 2 _recién_ cuando el personaje colisono con todos los objetos que otorgan dinero y haber perdido la salud.
+Un detalle **muy importante**: debe aparecer una puerta de salida para finalizar el nivel 2 _recién_ cuando el personaje colisono con todos los objetos que otorgan dinero y tener salud.
 
  
 Si el personaje se queda sin salud , entonces pierde. Si pasa por la puerta de salida, entonces gana. En cualquiera de los dos casos, debe aparecer un cartel que indique el resultado.
