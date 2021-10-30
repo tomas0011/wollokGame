@@ -1,5 +1,5 @@
 import wollok.game.*
-
+import nivel1.*
 // en la implementación real, conviene tener un personaje por nivel
 // los personajes probablemente tengan un comportamiendo más complejo que solamente
 // imagen y posición
@@ -9,27 +9,40 @@ object personajeSimple {
 	const property image = "player.png"	
 	
 	method subir() {
-		if (position.up(1).toString().split("@").get(1) != "10") {	
+		if( self.esMuro(position.up(1))){	
 			position = position.up(1)
 		}
 	}
 	
 	method bajar() {
-		if (position.down(1).toString().split("@").get(1) != "-1" ) {	
+		if( self.esMuro(position.down(1)) ){	
 			position = position.down(1)
 		}
 	}
 	
 	method moverDerecha() {
-		if (position.right(1).toString().split("@").get(0) != "20") {	
+		if( self.esMuro(position.right(1)) ){	
 			position = position.right(1)
 		}
 	}
 	
 	method moverIzquierda() {
-		if (position.left(1).toString().split("@").get(0) != "-1") {	
+		if( self.esMuro(position.left(1)) ){	
 			position = position.left(1)
 		}
 	}
+	
+	
+	
+	
+	method esMuro(coord){
+		
+		const x = coord.x()
+		const y = (coord.y() - 9 ).abs()
+		// Le resto 9 porque el sistema de coordenadas funciona al revez que en JS
+		
+		return not (nivelBloques.getMapa().get(y).get(x) == 1)
+	}
+	
 }
 
