@@ -5,6 +5,22 @@ import elementos.*
 import nivel2.*
 
 
+object colisiones{
+	method esMuro(coord){
+		
+		const x = coord.x()
+		const y = (coord.y() - 9 ).abs()
+		// Le resto 9 porque el sistema de coordenadas funciona al revez que en JS
+		
+		return not (nivelBloques.getMapa().get(y).get(x) == 1)
+	}
+	
+	
+}
+
+
+
+
 object nivelBloques {
 	
 	const mapa = [
