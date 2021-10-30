@@ -9,24 +9,27 @@ object personajeSimple {
 	const property image = "player.png"	
 	
 	method subir() {
-		if (not self.position().toString().split("@").get(1) == "0") {
-			self.position(position.up(1))	
+		if (position.up(1).toString().split("@").get(1) != "10") {	
+			position = position.up(1)
 		}
 	}
 	
 	method bajar() {
-		if(not self.position() == 0) {
-			self.position(position.down(1))	
+		if (position.down(1).toString().split("@").get(1) != "-1" ) {	
+			position = position.down(1)
 		}
 	}
 	
 	method moverDerecha() {
-		self.position(position.right(1))
+		if (position.right(1).toString().split("@").get(0) != "20") {	
+			position = position.right(1)
+		}
 	}
 	
 	method moverIzquierda() {
-		self.position(position.left(1))
+		if (position.left(1).toString().split("@").get(0) != "-1") {	
+			position = position.left(1)
+		}
 	}
-	
 }
 
