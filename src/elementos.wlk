@@ -42,5 +42,5 @@ class Consumible{
 	var property cantidad
 	var property position
 	var property image
-	
+
 }

@@ -24,28 +24,59 @@ object personajeSimple {
 	var property position = game.at(10,8)
 	const property image = "player.png"	
 	
-	method subir() {		
-		if( colisiones.esMuro(position.up(1))){	
+	method subir() {
+		const sigPosicion = position.up(1) 
+		const y = sigPosicion.y()
+		const x = sigPosicion.x()		
+		if(y == 10 ){
+			position = game.at(x,0)
+		} else if (colisiones.esMuro(sigPosicion)){
 			position = position.up(1)
 		}
 	}
 	
 	method bajar() {
-		if( colisiones.esMuro(position.down(1)) ){	
+		const sigPosicion = position.down(1) 
+		const y = sigPosicion.y()
+		const x = sigPosicion.x()		
+		if(y == -1 ){
+			position = game.at(x,9)
+		} else if (colisiones.esMuro(sigPosicion)){
 			position = position.down(1)
 		}
+		/*if( colisiones.esMuro(position.down(1)) ){	
+			position = position.down(1)
+		}*/
 	}
 	
 	method moverDerecha() {
-		if( colisiones.esMuro(position.right(1)) ){	
+		const sigPosicion = position.right(1) 
+		const y = sigPosicion.y()
+		const x = sigPosicion.x()		
+		if(x == 20 ){
+			position = game.at(0,y)
+		} else if (colisiones.esMuro(sigPosicion)){
 			position = position.right(1)
 		}
+		/*if( colisiones.esMuro(position.down(1)) ){	
+			position = position.right(1)
+		}*/
+		
 	}
 	
 	method moverIzquierda() {
-		if( colisiones.esMuro(position.left(1)) ){	
+		const sigPosicion = position.left(1) 
+		const y = sigPosicion.y()
+		const x = sigPosicion.x()		
+		if(x == -1 ){
+			position = game.at(19,y)
+		} else if (colisiones.esMuro(sigPosicion)){
 			position = position.left(1)
 		}
+		
+		/*if( colisiones.esMuro(position.left(1)) ){	
+			position = position.left(1)
+		}*/
 	}
 	
 	
