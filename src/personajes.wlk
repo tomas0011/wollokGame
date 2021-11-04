@@ -19,6 +19,11 @@ class Numero {
 	}
 }
 
+//class Texto {
+//	var property position
+//	var property text
+//}
+
 class Personaje inherits ElementoMovil {
 	
 }
@@ -26,6 +31,9 @@ class Personaje inherits ElementoMovil {
 class PersonajePrincipal inherits ElementoMovil {
 	var vida = 99
 	var mana = 99
+	var dinero = 0
+	const llaves = []
+	
 	override method image() = "player.png"
 	
 	override method subir() {
@@ -51,19 +59,41 @@ class PersonajePrincipal inherits ElementoMovil {
 	method mostrarEstadisticas(){
 		const vidaString = vida.toString().split("")
 		const manaString = mana.toString().split("")
+//		const llaveString = llaves.size().toString().split("")
+//		const dineroString = dinero.toString().split("")
 		
-		if(vidaString.size() == 1){ vidaString.add("-") }
-		if(manaString.size() == 1){ manaString.add("-") }
+		if (vidaString.size() == 1) { 
+			vidaString.add("-")
+		}
+		if (manaString.size() == 1) { 
+			manaString.add("-")
+		}
+//		if (llaveString.size() == 1) { 
+//			llaveString.add("-")
+//		}
+//		if (dineroString.size() == 1){ 
+//			dineroString.add("--")
+//		} else if (dineroString.size() == 2) { 
+//			dineroString.add("-")
+//		}
 		
 		const fsVida = new Numero(position = game.at(0,0), image = "vida ("+vidaString.get(0)+").png")		
 		const scVida = new Numero(position = game.at(1,0), image = "vida ("+vidaString.get(1)+").png")
 		
 		const fsMana = new Numero(position = game.at(3,0), image = "mana ("+manaString.get(0)+").png")		
 		const scMana = new Numero(position = game.at(4,0), image = "mana ("+manaString.get(1)+").png")
+		
+//		const textLlave = new Texto(position= game.at(6,0), text= llaveString)
+//		
+//		const textDinero = new Texto(position= game.at(18,0), text= dineroString)
+		
 		game.addVisual(fsVida)
 		game.addVisual(scVida)
 		game.addVisual(fsMana)
 		game.addVisual(scMana)
+		
+//		game.addVisual(textLlave)
+//		game.addVisual(textDinero)
 	}
 	
 	method perderVida(vidaPerdida){
@@ -79,6 +109,7 @@ class PersonajePrincipal inherits ElementoMovil {
 	
 	method ganarVida(vidaGanada){
 		vida = vida + vidaGanada
+		self.mostrarEstadisticas()
 	}
 	
 	method perderMana(manaPerdido){
@@ -93,6 +124,17 @@ class PersonajePrincipal inherits ElementoMovil {
 	
 	method ganarMana(manaGanado){
 		mana = mana + manaGanado
+		self.mostrarEstadisticas()
 	}	
+	
+	method guardarDinero(valorAAgregar) {
+		dinero += valorAAgregar
+		game.say(self, dinero.toString())
+	}
+	
+	method guardarLlave(nuevaLlave) {
+		llaves.add(nuevaLlave)
+		game.say(self, llaves.size().toString())
+	}
 }
 

@@ -80,55 +80,63 @@ class ElementoInmovil inherits Elemento {
 	override method tieneEfecto() = false
 }
 
-class Consumible inherits Elemento {
-	var property cantidad
-	var property estaVacio = false
+class Objeto inherits Elemento {
 	override method esInamobible() = false
 	override method tieneEfecto() = true
 	method activarEfectoEn(personaje)
 }
 
+class Consumible inherits Objeto {
+	var property cantidad
+}
+
 class ConsumibleDeMana inherits Consumible {	
-	var image = "orbe-mana.png"
-	
-	override method image() = image
-	
-	method image(newImage) {
-		image = newImage
-	}
+	override method image() = "orbe-mana.png"
 	
 	method serConsumidoPor(personaje) {
 		personaje.ganarMana(self.cantidad())
-		self.estaVacio(true)
-		self.image("orbe-vacio.png")
 	}
 	
 	override method activarEfectoEn(personaje) {
-		if (not self.estaVacio()) {
-			self.serConsumidoPor(personaje)	
-		}
+		self.serConsumidoPor(personaje)
 	}
 }
 
-class ConsumibleDeVida inherits Consumible {
-	var image = "orbe-vida.png"
-	
-	override method image() = image
-	
-	method image(newImage) {
-		image = newImage
-	}
+class ConsumibleDeVida inherits Consumible {	
+	override method image() = "orbe-vida.png"
 	
 	method serConsumidoPor(personaje) {
 		personaje.ganarVida(self.cantidad())
-		self.estaVacio(true)
-		self.image("orbe-vacio.png")
 	}
 	
 	override method activarEfectoEn(personaje) {
-		if (not self.estaVacio()) {
-			self.serConsumidoPor(personaje)	
-		}
+		self.serConsumidoPor(personaje)
+	}
+}
+
+class Llave inherits Objeto {
+	override method image() = "key.png"
+	
+	method serAgarradaPor(personaje) {
+		personaje.guardarLlave(self)
+	}
+	
+	override method activarEfectoEn(personaje) {
+		self.serAgarradaPor(personaje)
+	}
+}
+
+class Dinero inherits Objeto {
+	const property valor
+	
+	override method image() = "coin.png"
+	
+	method serAgarradaPor(personaje) {
+		personaje.guardarDinero(valor)
+	}
+	
+	override method activarEfectoEn(personaje) {
+		self.serAgarradaPor(personaje)
 	}
 }
 
