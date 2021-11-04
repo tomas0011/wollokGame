@@ -16,11 +16,12 @@ class ElementoMovil inherits Elemento {
 	
 	method subir() {
 		const siguientePosicion = position.up(1)
+		const consiguientePosicion = position.up(2)
 		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
 		
-		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
+		if (objetosEncontrados.size() == 0 || (objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0)) {
 			if (y == 10) {
 				position = game.at(x, 1)
 			} else {
@@ -31,11 +32,12 @@ class ElementoMovil inherits Elemento {
 	
 	method bajar() {
 		const siguientePosicion = position.down(1)
+		const consiguientePosicion = position.down(2)
 		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
 		
-		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
+		if (objetosEncontrados.size() == 0 || (objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0)) {
 			if (y == 0) {
 				position = game.at(x, 9)
 			} else {
@@ -46,11 +48,12 @@ class ElementoMovil inherits Elemento {
 	
 	method moverDerecha() {
 		const siguientePosicion = position.right(1)
+		const consiguientePosicion = position.right(2)
 		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
 		
-		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
+		if (objetosEncontrados.size() == 0 || (objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0)) {
 			if (x == 20) {
 				position = game.at(0, y)
 			} else {
@@ -61,11 +64,12 @@ class ElementoMovil inherits Elemento {
 	
 	method moverIzquierda() {
 		const siguientePosicion = position.left(1)
+		const consiguientePosicion = position.left(2)
 		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
 		
-		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
+		if (objetosEncontrados.size() == 0 || (objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0)) {
 			if (x == -1) {
 				position = game.at(19, y)
 			} else {
