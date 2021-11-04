@@ -13,9 +13,9 @@ object nivel1 {
 		game.addVisual(new Fondo(image="emptyMap.png"))
 		game.addVisual(new Bloque(position=game.at(3,5)))
 		game.addVisual(new Bloque(position=game.at(3,7)))
-		game.addVisual(personajePrincipal)
 		game.addVisual(consumibleDeMana1)
 		game.addVisual(consumibleDeVida1)
+		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
 		
 		keyboard.t().onPressDo({ self.terminar() })
