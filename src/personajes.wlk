@@ -9,9 +9,10 @@ import elementos.*
 
 
 class Numero {
+	
 	var property position
 	var property image = "mana (0).png"
-	
+	method esInamobible() = false
 	
 	method cambiarNumeroA_(num){
 		self.image(num + ".png")

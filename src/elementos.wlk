@@ -15,30 +15,62 @@ class ElementoMovil inherits Elemento {
 	override method tieneEfecto() = false
 	
 	method subir() {
-		const objetosEncontrados = game.getObjectsIn(position.up(1))
+		const siguientePosicion = position.up(1)
+		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const x =  siguientePosicion.x()
+		const y =  siguientePosicion.y()
+		
 		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
-			position = position.up(1)
+			if (y == 10) {
+				position = game.at(x, 1)
+			} else {
+				position = siguientePosicion	
+			}
 		}
 	}
 	
 	method bajar() {
-		const objetosEncontrados = game.getObjectsIn(position.down(1))
+		const siguientePosicion = position.down(1)
+		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const x =  siguientePosicion.x()
+		const y =  siguientePosicion.y()
+		
 		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
-			position = position.down(1)
+			if (y == 0) {
+				position = game.at(x, 9)
+			} else {
+				position = siguientePosicion	
+			}
 		}
 	}
 	
 	method moverDerecha() {
-		const objetosEncontrados = game.getObjectsIn(position.right(1))
+		const siguientePosicion = position.right(1)
+		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const x =  siguientePosicion.x()
+		const y =  siguientePosicion.y()
+		
 		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
-			position = position.right(1)
+			if (x == 20) {
+				position = game.at(0, y)
+			} else {
+				position = siguientePosicion	
+			}
 		}
 	}
 	
 	method moverIzquierda() {
-		const objetosEncontrados = game.getObjectsIn(position.left(1))
+		const siguientePosicion = position.left(1)
+		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const x =  siguientePosicion.x()
+		const y =  siguientePosicion.y()
+		
 		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
-			position = position.left(1)
+			if (x == -1) {
+				position = game.at(19, y)
+			} else {
+				position = siguientePosicion	
+			}
 		}
 	}
 }

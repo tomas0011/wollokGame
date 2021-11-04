@@ -11,6 +11,7 @@ program juego_aventura {
 	game.boardGround("mapa.png")
 
 	nivel1.configurate()
-	
 	game.start()
+	
+	
 }
