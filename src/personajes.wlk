@@ -27,6 +27,26 @@ class PersonajePrincipal inherits ElementoMovil {
 	var mana = 99
 	override method image() = "player.png"
 	
+	override method subir() {
+		super()
+		self.perderMana(1)
+	}
+	
+	override method bajar() {
+		super()
+		self.perderMana(1)
+	}
+	
+	override method moverDerecha() {
+		super()
+		self.perderMana(1)
+	}
+	
+	override method moverIzquierda() {
+		super()
+		self.perderMana(1)
+	}
+	
 	method mostrarEstadisticas(){
 		const vidaString = vida.toString().split("")
 		const manaString = mana.toString().split("")
