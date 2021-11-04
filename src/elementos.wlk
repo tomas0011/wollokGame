@@ -14,7 +14,32 @@ class ElementoMovil inherits Elemento {
 	override method esInamobible() = false
 	override method tieneEfecto() = false
 	
+	
+	method efectoPacman(siguientePosicion,consiguientePosicion, condicion, coordenadaEnCasoDeBorde ){
+		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const x = siguientePosicion.x()
+		const y = siguientePosicion.y()
+		
+		if (objetosEncontrados.size() == 0 ||(objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0) ) {
+			if (condicion) {
+				position = coordenadaEnCasoDeBorde
+			} else {
+				position = siguientePosicion
+			}
+		}
+	}
+	
 	method subir() {
+		/*const siguientePosicion = position.up(1)
+		const y = siguientePosicion.y()
+		const x = siguientePosicion.x()
+		const consiguientePosicion = position.up(2)
+		const condicion = y == 10
+		const posicionEnCasoDeBorde = game.at(x,1)
+		self.efectoPacman(siguientePosicion,consiguientePosicion, condicion , posicionEnCasoDeBorde  )
+		*/
+		
+		
 		const siguientePosicion = position.up(1)
 		const consiguientePosicion = position.up(2)
 		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
