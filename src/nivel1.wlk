@@ -4,135 +4,74 @@ import personajes.*
 import elementos.*
 import nivel2.*
 
-
-object colisiones{
-	method esMuro(coord){
-		
-		const x = coord.x()
-		const y = (coord.y() - 9 ).abs()
-		// Le resto 9 porque el sistema de coordenadas funciona al revez que en JS
-		
-		return not (nivelBloques.getMapa().get(y).get(x) == 1)
-	}
+object nivel1 {
+	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7))
+	const consumibleDeMana1 = new ConsumibleDeMana(cantidad=15, position= game.at(5,5))
+	const consumibleDeVida1 = new ConsumibleDeVida(cantidad=15, position= game.at(5,6))
 	
-	
-}
-
-
-
-
-object nivelBloques {
-	
-	const mapa = [
-	     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-		 [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-		 [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-		 [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-		 [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-		 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-		 [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-		 [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-		 [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-	 	 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]		
-	]
-  
-		
-	method getMapa() = return mapa
 	method configurate() {
-		// fondo - es importante que sea el primer visual que se agregue
-		game.addVisual(new Fondo(image="mapa.png"))
-				 
-		// otros visuals, p.ej. bloques o llaves
+		game.addVisual(new Fondo(image="emptyMap.png"))
 		game.addVisual(new Bloque(position=game.at(3,5)))
 		game.addVisual(new Bloque(position=game.at(3,7)))
-			
-		// personaje, es importante que sea el último visual que se agregue
-		game.addVisual(personajeSimple)
+		game.addVisual(personajePrincipal)
+		game.addVisual(consumibleDeMana1)
+		game.addVisual(consumibleDeVida1)
+		personajePrincipal.mostrarEstadisticas()
 		
-		// teclado
-		// este es para probar, no es necesario dejarlo
 		keyboard.t().onPressDo({ self.terminar() })
 		
 		keyboard.up().onPressDo({ 
-			personajeSimple.subir()
-			const collider = game.colliders(personajeSimple)
-			
-			if (collider.size()>0 and collider.tipo() == "obstaculo"){
-				//collider.subir()
-				console.println(collider)
-				console.println(collider.tipo())
-				
-			} else if (collider.size()>0){
-				console.println("Tu vieja")
+			personajePrincipal.subir()
+			console.println("subiendo")
+			if (game.colliders(personajePrincipal).size() > 0) {
+				game.uniqueCollider(personajePrincipal).subir()
 			}
-			
-		})
-		
-		
-		
-		keyboard.right().onPressDo({ 
-			personajeSimple.moverDerecha()
-			const collider = game.colliders(personajeSimple)
-			
-			if (collider.tipo() == "obstaculo"){
-				collider.moverDerecha()
-			} else {
-				console.println("Tu vieja")
-			}
-		})
-		
-		keyboard.left().onPressDo({ 
-			personajeSimple.moverIzquierda()
-			/*game.whenCollideDo(personajeSimple, {
-				e =>
-				if (e.tipo() == "obstaculo"){
-					console.println("izquierda")
-					e.moverIzquierda()
-				} else {
-					return "Tu vieja"
-				}
-			})*/
-			const collider = game.colliders(personajeSimple)
-			
-			if (collider.tipo() == "obstaculo"){
-				collider.moverIzquierda()
-			} else {
-				console.println("Tu vieja")
-			}
+//			game.onCollideDo(personajePrincipal, {a => a.subir()})
 		})
 		
 		keyboard.down().onPressDo({ 
-			personajeSimple.bajar()
-			const collider = game.colliders(personajeSimple)
-			
-			if (collider.tipo() == "obstaculo"){
-				collider.bajar()
-			} else {
-				console.println("Tu vieja")
+			personajePrincipal.bajar()
+			console.println("bajando")
+			if (game.colliders(personajePrincipal).size() > 0) {
+				game.uniqueCollider(personajePrincipal).bajar()	
 			}
-			
+//			game.onCollideDo(personajePrincipal, {a => a.bajar()})
+		})
+		
+		keyboard.right().onPressDo({ 
+			personajePrincipal.moverDerecha()
+			console.println("a la derecha")
+			if (game.colliders(personajePrincipal).size() > 0) {
+				game.uniqueCollider(personajePrincipal).moverDerecha()	
+			}
+//			game.onCollideDo(personajePrincipal, {a => a.moverDerecha()})
+		})
+		
+		keyboard.left().onPressDo({ 
+			personajePrincipal.moverIzquierda()
+			console.println("a la izquierda")
+			if (game.colliders(personajePrincipal).size() > 0) {
+				game.uniqueCollider(personajePrincipal).moverIzquierda()
+			}
+//			game.onCollideDo(personajePrincipal, {a => a.moverIzquierda()})
 		})
 	}
+	
 	method terminar() {
-		// game.clear() limpia visuals, teclado, colisiones y acciones
 		game.clear()
-		// después puedo volver a agregar el fondo, y algún visual para que no quede tan pelado
 		game.addVisual(new Fondo(image="fondoCompleto.png"))
-		game.addVisual(personajeSimple)
-		// después de un ratito ...
+		game.addVisual(personajePrincipal)
 		game.schedule(2500, {
 			game.clear()
-			// cambio de fondo
 			game.addVisual(new Fondo(image="finNivel1.png"))
-			// después de un ratito ...
 			game.schedule(3000, {
-				// ... limpio todo de nuevo
 				game.clear()
-				// y arranco el siguiente nivel
-				nivelLlaves.configurate()
+//				nivel2.configurate()
 			})
 		})
 	}
 		
 }
+
+
 
