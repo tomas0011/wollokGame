@@ -3,15 +3,16 @@ import nivel1.*
 
 class Elemento {	
 	var property position
-	
-	method image()
-	
+
+	method image()	
 	method esInamobible()
+	method tieneEfecto()
 }
 
 class ElementoMovil inherits Elemento {
 	
 	override method esInamobible() = false
+	override method tieneEfecto() = false
 	
 	method subir() {
 		const objetosEncontrados = game.getObjectsIn(position.up(1))
@@ -44,20 +45,59 @@ class ElementoMovil inherits Elemento {
 
 class ElementoInmovil inherits Elemento {
 	override method esInamobible() = true
+	override method tieneEfecto() = false
 }
 
 class Consumible inherits Elemento {
 	var property cantidad
 	var property estaVacio = false
 	override method esInamobible() = false
+	override method tieneEfecto() = true
+	method activarEfectoEn(personaje)
 }
 
-class ConsumibleDeMana inherits Consumible {
-	override method image() = "orbe-mana.png"
+class ConsumibleDeMana inherits Consumible {	
+	var image = "orbe-mana.png"
+	
+	override method image() = image
+	
+	method image(newImage) {
+		image = newImage
+	}
+	
+	method serConsumidoPor(personaje) {
+		personaje.ganarMana(self.cantidad())
+		self.estaVacio(true)
+		self.image("orbe-vacio.png")
+	}
+	
+	override method activarEfectoEn(personaje) {
+		if (not self.estaVacio()) {
+			self.serConsumidoPor(personaje)	
+		}
+	}
 }
 
 class ConsumibleDeVida inherits Consumible {
-	override method image() = "orbe-vida.png"
+	var image = "orbe-vida.png"
+	
+	override method image() = image
+	
+	method image(newImage) {
+		image = newImage
+	}
+	
+	method serConsumidoPor(personaje) {
+		personaje.ganarVida(self.cantidad())
+		self.estaVacio(true)
+		self.image("orbe-vacio.png")
+	}
+	
+	override method activarEfectoEn(personaje) {
+		if (not self.estaVacio()) {
+			self.serConsumidoPor(personaje)	
+		}
+	}
 }
 
 class Muro inherits ElementoInmovil {

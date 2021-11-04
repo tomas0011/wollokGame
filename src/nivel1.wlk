@@ -5,9 +5,9 @@ import elementos.*
 import nivel2.*
 
 object nivel1 {
-	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7))
 	const consumibleDeMana1 = new ConsumibleDeMana(cantidad=15, position= game.at(5,5))
 	const consumibleDeVida1 = new ConsumibleDeVida(cantidad=15, position= game.at(5,6))
+	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7))
 	
 	method configurate() {
 		game.addVisual(new Fondo(image="emptyMap.png"))
@@ -22,9 +22,15 @@ object nivel1 {
 		
 		keyboard.up().onPressDo({ 
 			personajePrincipal.subir()
-			console.println("subiendo")
 			if (game.colliders(personajePrincipal).size() > 0) {
-				game.uniqueCollider(personajePrincipal).subir()
+				const collider = game.uniqueCollider(personajePrincipal)
+				if (not collider.esInamobible()) {
+					if (not collider.tieneEfecto()) {
+						collider.subir()
+					} else {
+						collider.activarEfectoEn(personajePrincipal)			
+					}
+				}
 			}
 //			game.onCollideDo(personajePrincipal, {a => a.subir()})
 		})
@@ -33,7 +39,14 @@ object nivel1 {
 			personajePrincipal.bajar()
 			console.println("bajando")
 			if (game.colliders(personajePrincipal).size() > 0) {
-				game.uniqueCollider(personajePrincipal).bajar()	
+				const collider = game.uniqueCollider(personajePrincipal)
+				if (not collider.esInamobible()) {
+					if (not collider.tieneEfecto()) {
+						collider.bajar()
+					} else {
+						collider.activarEfectoEn(personajePrincipal)			
+					}
+				}
 			}
 //			game.onCollideDo(personajePrincipal, {a => a.bajar()})
 		})
@@ -42,7 +55,14 @@ object nivel1 {
 			personajePrincipal.moverDerecha()
 			console.println("a la derecha")
 			if (game.colliders(personajePrincipal).size() > 0) {
-				game.uniqueCollider(personajePrincipal).moverDerecha()	
+				const collider = game.uniqueCollider(personajePrincipal)
+				if (not collider.esInamobible()) {
+					if (not collider.tieneEfecto()) {
+						collider.moverDerecha()
+					} else {
+						collider.activarEfectoEn(personajePrincipal)			
+					}
+				}
 			}
 //			game.onCollideDo(personajePrincipal, {a => a.moverDerecha()})
 		})
@@ -51,7 +71,14 @@ object nivel1 {
 			personajePrincipal.moverIzquierda()
 			console.println("a la izquierda")
 			if (game.colliders(personajePrincipal).size() > 0) {
-				game.uniqueCollider(personajePrincipal).moverIzquierda()
+				const collider = game.uniqueCollider(personajePrincipal)
+				if (not collider.esInamobible()) {
+					if (not collider.tieneEfecto()) {
+						collider.moverIzquierda()
+					} else {
+						collider.activarEfectoEn(personajePrincipal)			
+					}
+				}
 			}
 //			game.onCollideDo(personajePrincipal, {a => a.moverIzquierda()})
 		})
