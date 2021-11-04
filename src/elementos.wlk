@@ -50,53 +50,32 @@ class ElementoInmovil inherits Elemento {
 
 class Consumible inherits Elemento {
 	var property cantidad
-	var property estaVacio = false
 	override method esInamobible() = false
 	override method tieneEfecto() = true
 	method activarEfectoEn(personaje)
 }
 
 class ConsumibleDeMana inherits Consumible {	
-	var image = "orbe-mana.png"
-	
-	override method image() = image
-	
-	method image(newImage) {
-		image = newImage
-	}
+	override method image() = "orbe-mana.png"
 	
 	method serConsumidoPor(personaje) {
 		personaje.ganarMana(self.cantidad())
-		self.estaVacio(true)
-		self.image("orbe-vacio.png")
 	}
 	
 	override method activarEfectoEn(personaje) {
-		if (not self.estaVacio()) {
-			self.serConsumidoPor(personaje)	
-		}
+		self.serConsumidoPor(personaje)
 	}
 }
 
-class ConsumibleDeVida inherits Consumible {
-	var image = "orbe-vida.png"
-	
-	override method image() = image
-	
-	method image(newImage) {
-		image = newImage
-	}
+class ConsumibleDeVida inherits Consumible {	
+	override method image() = "orbe-vida.png"
 	
 	method serConsumidoPor(personaje) {
 		personaje.ganarVida(self.cantidad())
-		self.estaVacio(true)
-		self.image("orbe-vacio.png")
 	}
 	
 	override method activarEfectoEn(personaje) {
-		if (not self.estaVacio()) {
-			self.serConsumidoPor(personaje)	
-		}
+		self.serConsumidoPor(personaje)
 	}
 }
 

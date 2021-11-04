@@ -78,6 +78,7 @@ class PersonajePrincipal inherits ElementoMovil {
 	
 	method ganarVida(vidaGanada){
 		vida = vida + vidaGanada
+		self.mostrarEstadisticas()
 	}
 	
 	method perderMana(manaPerdido){
@@ -92,6 +93,7 @@ class PersonajePrincipal inherits ElementoMovil {
 	
 	method ganarMana(manaGanado){
 		mana = mana + manaGanado
+		self.mostrarEstadisticas()
 	}	
 }
 

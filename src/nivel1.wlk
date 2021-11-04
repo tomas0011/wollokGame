@@ -28,7 +28,8 @@ object nivel1 {
 					if (not collider.tieneEfecto()) {
 						collider.subir()
 					} else {
-						collider.activarEfectoEn(personajePrincipal)			
+						collider.activarEfectoEn(personajePrincipal)
+						game.removeVisual(collider)
 					}
 				}
 			}
@@ -44,7 +45,8 @@ object nivel1 {
 					if (not collider.tieneEfecto()) {
 						collider.bajar()
 					} else {
-						collider.activarEfectoEn(personajePrincipal)			
+						collider.activarEfectoEn(personajePrincipal)
+						game.removeVisual(collider)		
 					}
 				}
 			}
@@ -60,7 +62,8 @@ object nivel1 {
 					if (not collider.tieneEfecto()) {
 						collider.moverDerecha()
 					} else {
-						collider.activarEfectoEn(personajePrincipal)			
+						collider.activarEfectoEn(personajePrincipal)
+						game.removeVisual(collider)		
 					}
 				}
 			}
@@ -76,7 +79,8 @@ object nivel1 {
 					if (not collider.tieneEfecto()) {
 						collider.moverIzquierda()
 					} else {
-						collider.activarEfectoEn(personajePrincipal)			
+						collider.activarEfectoEn(personajePrincipal)
+						game.removeVisual(collider)		
 					}
 				}
 			}
