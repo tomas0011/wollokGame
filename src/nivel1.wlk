@@ -35,7 +35,7 @@ object nivel1 {
 //			game.onCollideDo(personajePrincipal, {a => a.subir()})
 		})
 		
-		keyboard.down().onPressDo({ 
+		keyboard.down().onPressDo({ 			
 			personajePrincipal.bajar()
 			console.println("bajando")
 			if (game.colliders(personajePrincipal).size() > 0) {
@@ -52,6 +52,7 @@ object nivel1 {
 		})
 		
 		keyboard.right().onPressDo({ 
+
 			personajePrincipal.moverDerecha()
 			console.println("a la derecha")
 			if (game.colliders(personajePrincipal).size() > 0) {
@@ -68,6 +69,7 @@ object nivel1 {
 		})
 		
 		keyboard.left().onPressDo({ 
+
 			personajePrincipal.moverIzquierda()
 			console.println("a la izquierda")
 			if (game.colliders(personajePrincipal).size() > 0) {
@@ -85,6 +87,7 @@ object nivel1 {
 	}
 	
 	method terminar() {
+		
 		game.clear()
 		game.addVisual(new Fondo(image="fondoCompleto.png"))
 		game.addVisual(personajePrincipal)
