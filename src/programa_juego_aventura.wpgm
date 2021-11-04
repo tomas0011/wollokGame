@@ -1,6 +1,7 @@
 import wollok.game.*
+import elementos.*
 import nivel1.*
-
+import personajes.*
 program juego_aventura {
 
 	game.title("Oh qué aventura objetosa")
@@ -10,6 +11,20 @@ program juego_aventura {
 	game.boardGround("mapa.png")
 
 	nivelBloques.configurate()	
+	personajeSimple.mostrarEstadisticas()
+	
+	
+	// Consumibles
+	var consumible1 = new Consumible(tipo="mana", cantidad=15, position= game.at(5,5),image= "orbe-mana.png")
+	var consumible2 = new Consumible(tipo="vida", cantidad=15, position= game.at(5,6),image= "orbe-vida.png")
+	game.addVisual(consumible1)
+	game.addVisual(consumible2)
+
+	game.onTick(200, "elpepe", { personajeSimple.perderVida(1) })
+	
 	
 	game.start()
+	
+	
+	
 }

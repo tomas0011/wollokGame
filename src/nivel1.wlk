@@ -55,37 +55,64 @@ object nivelBloques {
 		
 		keyboard.up().onPressDo({ 
 			personajeSimple.subir()
-			if (game.colliders(personajeSimple).size() > 0) {
-				game.uniqueCollider(personajeSimple).subir()
+			const collider = game.colliders(personajeSimple)
+			
+			if (collider.size()>0 and collider.tipo() == "obstaculo"){
+				//collider.subir()
+				console.println(collider)
+				console.println(collider.tipo())
+				
+			} else if (collider.size()>0){
+				console.println("Tu vieja")
 			}
-//			game.onCollideDo(personajeSimple, {a => a.subir()})
+			
 		})
 		
-		keyboard.down().onPressDo({ 
-			personajeSimple.bajar()
-			if (game.colliders(personajeSimple).size() > 0) {
-				game.uniqueCollider(personajeSimple).bajar()	
-			}
-//			game.onCollideDo(personajeSimple, {a => a.bajar()})
-		})
+		
 		
 		keyboard.right().onPressDo({ 
 			personajeSimple.moverDerecha()
-			if (game.colliders(personajeSimple).size() > 0) {
-				game.uniqueCollider(personajeSimple).moverDerecha()	
+			const collider = game.colliders(personajeSimple)
+			
+			if (collider.tipo() == "obstaculo"){
+				collider.moverDerecha()
+			} else {
+				console.println("Tu vieja")
 			}
-//			game.onCollideDo(personajeSimple, {a => a.moverDerecha()})
 		})
 		
 		keyboard.left().onPressDo({ 
 			personajeSimple.moverIzquierda()
-			if (game.colliders(personajeSimple).size() > 0) {
-				game.uniqueCollider(personajeSimple).moverIzquierda()
+			/*game.whenCollideDo(personajeSimple, {
+				e =>
+				if (e.tipo() == "obstaculo"){
+					console.println("izquierda")
+					e.moverIzquierda()
+				} else {
+					return "Tu vieja"
+				}
+			})*/
+			const collider = game.colliders(personajeSimple)
+			
+			if (collider.tipo() == "obstaculo"){
+				collider.moverIzquierda()
+			} else {
+				console.println("Tu vieja")
 			}
-//			game.onCollideDo(personajeSimple, {a => a.moverIzquierda()})
+		})
+		
+		keyboard.down().onPressDo({ 
+			personajeSimple.bajar()
+			const collider = game.colliders(personajeSimple)
+			
+			if (collider.tipo() == "obstaculo"){
+				collider.bajar()
+			} else {
+				console.println("Tu vieja")
+			}
+			
 		})
 	}
-	
 	method terminar() {
 		// game.clear() limpia visuals, teclado, colisiones y acciones
 		game.clear()
