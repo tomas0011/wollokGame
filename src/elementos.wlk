@@ -1,46 +1,74 @@
 import wollok.game.*
+import nivel1.*
 
-class Bloque {
+class Elemento {	
 	var property position
-	const property image = "market.png" 	
-	method tipo() = return "obstaculo"
+	
+	method image()
+	
+	method esInamobible()
+}
+
+class ElementoMovil inherits Elemento {
+	
+	override method esInamobible() = false
+	
 	method subir() {
-		
-		self.position(position.up(1))
+		const objetosEncontrados = game.getObjectsIn(position.up(1))
+		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
+			position = position.up(1)
+		}
 	}
 	
 	method bajar() {
-		
-		self.position(position.down(1))
+		const objetosEncontrados = game.getObjectsIn(position.down(1))
+		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
+			position = position.down(1)
+		}
 	}
 	
 	method moverDerecha() {
-		
-		self.position(position.right(1))
+		const objetosEncontrados = game.getObjectsIn(position.right(1))
+		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
+			position = position.right(1)
+		}
 	}
 	
 	method moverIzquierda() {
-		
-		self.position(position.left(1))
-	}
-	
-	method queHayALaDerecha() {
-		return 'asdasdasda'
-	}
-	
-	method queHayALaIzquierda() {
-		return 'asdasdasda'
+		const objetosEncontrados = game.getObjectsIn(position.left(1))
+		if (objetosEncontrados.size() == 0 || objetosEncontrados.all({ elemento => not elemento.esInamobible() })) {
+			position = position.left(1)
+		}
 	}
 }
 
+class ElementoInmovil inherits Elemento {
+	override method esInamobible() = true
+}
 
-
-
-
-class Consumible{
-	var property tipo
+class Consumible inherits Elemento {
 	var property cantidad
-	var property position
-	var property image
-	
+	var property estaVacio = false
+	override method esInamobible() = false
 }
+
+class ConsumibleDeMana inherits Consumible {
+	override method image() = "orbe-mana.png"
+}
+
+class ConsumibleDeVida inherits Consumible {
+	override method image() = "orbe-vida.png"
+}
+
+class Muro inherits ElementoInmovil {
+	override method image() = "natureWall.png"
+}
+
+class Bloque inherits ElementoMovil {
+	override method image() = "market.png" 	
+}
+
+
+
+
+
