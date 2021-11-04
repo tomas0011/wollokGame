@@ -1,17 +1,16 @@
 import wollok.game.*
+import configuracion.*
 import elementos.*
-import nivel1.*
 import personajes.*
-program juego_aventura {
+import nivel1.*
 
+program juego_aventura {
 	game.title("Oh qué aventura objetosa")
 	// Le puse height 10 porque en mi compu no se llega a ver
-	game.height(10)
-	game.width(20)
+	game.height(gameSize.height())
+	game.width(gameSize.width())
 	game.boardGround("mapa.png")
 
 	nivel1.configurate()
 	game.start()
-	
-	
 }
