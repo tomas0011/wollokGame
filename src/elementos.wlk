@@ -48,11 +48,14 @@ class ElementoInmovil inherits Elemento {
 	override method tieneEfecto() = false
 }
 
-class Consumible inherits Elemento {
-	var property cantidad
+class Objeto inherits Elemento {
 	override method esInamobible() = false
 	override method tieneEfecto() = true
 	method activarEfectoEn(personaje)
+}
+
+class Consumible inherits Objeto {
+	var property cantidad
 }
 
 class ConsumibleDeMana inherits Consumible {	
@@ -76,6 +79,32 @@ class ConsumibleDeVida inherits Consumible {
 	
 	override method activarEfectoEn(personaje) {
 		self.serConsumidoPor(personaje)
+	}
+}
+
+class Llave inherits Objeto {
+	override method image() = "key.png"
+	
+	method serAgarradaPor(personaje) {
+		personaje.guardarLlave(self)
+	}
+	
+	override method activarEfectoEn(personaje) {
+		self.serAgarradaPor(personaje)
+	}
+}
+
+class Dinero inherits Objeto {
+	const property valor
+	
+	override method image() = "coin.png"
+	
+	method serAgarradaPor(personaje) {
+		personaje.guardarDinero(valor)
+	}
+	
+	override method activarEfectoEn(personaje) {
+		self.serAgarradaPor(personaje)
 	}
 }
 
