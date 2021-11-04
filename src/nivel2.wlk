@@ -1,5 +1,5 @@
 import wollok.game.*
-import fondo.*
+import configuracion.*
 import personajes.*
 
 object nivel2 {
