@@ -1,5 +1,6 @@
 import wollok.game.*
 import nivel1.*
+import configuracion.*
 
 class Elemento {	
 	var property position
@@ -42,12 +43,17 @@ class ElementoMovil inherits Elemento {
 		
 		const siguientePosicion = position.up(1)
 		const consiguientePosicion = position.up(2)
-		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
-		
-		if (objetosEncontrados.size() == 0 || (objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0)) {
-			if (y == 10) {
+		if (
+			(objetosEncontradosEnSiguiente.size() == 0) 
+			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
+			and (objetosEncontradosEnConsiguiente.size() == 0) 
+			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
+		) {
+			if (y == gameSize.height()) {
 				position = game.at(x, 1)
 			} else {
 				position = siguientePosicion	
@@ -58,13 +64,19 @@ class ElementoMovil inherits Elemento {
 	method bajar() {
 		const siguientePosicion = position.down(1)
 		const consiguientePosicion = position.down(2)
-		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
 		
-		if (objetosEncontrados.size() == 0 || (objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0)) {
+		if (
+			(objetosEncontradosEnSiguiente.size() == 0) 
+			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
+			and (objetosEncontradosEnConsiguiente.size() == 0) 
+			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
+		) {
 			if (y == 0) {
-				position = game.at(x, 9)
+				position = game.at(x, gameSize.height() - 1)
 			} else {
 				position = siguientePosicion	
 			}
@@ -74,12 +86,18 @@ class ElementoMovil inherits Elemento {
 	method moverDerecha() {
 		const siguientePosicion = position.right(1)
 		const consiguientePosicion = position.right(2)
-		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
 		
-		if (objetosEncontrados.size() == 0 || (objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0)) {
-			if (x == 20) {
+		if (
+			(objetosEncontradosEnSiguiente.size() == 0) 
+			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
+			and (objetosEncontradosEnConsiguiente.size() == 0) 
+			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
+		) {
+			if (x == gameSize.width()) {
 				position = game.at(0, y)
 			} else {
 				position = siguientePosicion	
@@ -90,13 +108,19 @@ class ElementoMovil inherits Elemento {
 	method moverIzquierda() {
 		const siguientePosicion = position.left(1)
 		const consiguientePosicion = position.left(2)
-		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
 		
-		if (objetosEncontrados.size() == 0 || (objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0)) {
+		if (
+			(objetosEncontradosEnSiguiente.size() == 0) 
+			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
+			and (objetosEncontradosEnConsiguiente.size() == 0) 
+			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
+		) {
 			if (x == -1) {
-				position = game.at(19, y)
+				position = game.at(gameSize.width() - 1, y)
 			} else {
 				position = siguientePosicion	
 			}
