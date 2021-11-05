@@ -8,6 +8,7 @@ class Elemento {
 	method image()	
 	method esInamobible()
 	method tieneEfecto()
+	method esJugable() = false
 }
 
 class ElementoMovil inherits Elemento {

@@ -25,14 +25,82 @@ class Numero {
 //}
 
 class Personaje inherits ElementoMovil {
+	var property vida
 	
+	method perderVida(vidaPerdida){
+		const vidaProxima = vida - vidaPerdida
+		if(vidaProxima <= 0){
+			//nivelBloques.terminar()
+			self.vida(0)
+		} else {
+			self.vida(vidaProxima)
+		}
+	}
+	
+	method ganarVida(vidaGanada){
+		self.vida(vida + vidaGanada)
+	}
 }
 
-class PersonajePrincipal inherits ElementoMovil {
-	var vida = 99
-	var mana = 99
-	var dinero = 0
+class Enemigo inherits Personaje {
+	var property dano = 10
+	
+	method quitarVidaA(personaje) {
+		personaje.perderVida(dano)
+	}
+	
+	method hacerMovimientoRandom()
+}
+
+class Arana inherits Enemigo {
+	override method image() = "arana.png"
+	
+	method danarPersonajeSiExiste() {
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(self.position())
+		const jugadoresEncontrados = objetosEncontradosEnSiguiente.filter({ elemento => elemento.esJugable() })
+		jugadoresEncontrados.forEach({ jugador => self.quitarVidaA(jugador) })
+	}
+	
+	override method hacerMovimientoRandom() {
+		const direccionAleatorea = 0.randomUpTo(5).truncate(0)
+		if (direccionAleatorea == 1) {
+			self.subir()
+		} else if (direccionAleatorea == 2) {
+			self.bajar()
+		} else if (direccionAleatorea == 3) {
+			self.moverIzquierda()
+		} else {
+			self.moverDerecha()
+		}
+	}
+	
+	override method subir() {
+		super()
+		self.danarPersonajeSiExiste()
+	}
+	
+	override method bajar() {
+		super()
+		self.danarPersonajeSiExiste()
+	}
+	
+	override method moverIzquierda() {
+		super()
+		self.danarPersonajeSiExiste()
+	}
+	
+	override method moverDerecha() {
+		super()
+		self.danarPersonajeSiExiste()
+	}
+}
+
+class PersonajePrincipal inherits Personaje {
+	var property mana = 99
+	var property dinero = 0
 	const llaves = []
+	
+	override method esJugable() = true
 	
 	override method image() = "player.png"
 	
@@ -57,8 +125,8 @@ class PersonajePrincipal inherits ElementoMovil {
 	}
 	
 	method mostrarEstadisticas(){
-		const vidaString = vida.toString().split("")
-		const manaString = mana.toString().split("")
+		const vidaString = self.vida().toString().split("")
+		const manaString = self.mana().toString().split("")
 //		const llaveString = llaves.size().toString().split("")
 //		const dineroString = dinero.toString().split("")
 		
@@ -96,39 +164,33 @@ class PersonajePrincipal inherits ElementoMovil {
 //		game.addVisual(textDinero)
 	}
 	
-	method perderVida(vidaPerdida){
-		const vidaProxima = vida - vidaPerdida
-		if(vidaProxima <= 0){
-			//nivelBloques.terminar()
-			vida = 0
-		} else {
-			vida = vidaProxima
-		}
+	override method perderVida(vidaPerdida){
+		super(vidaPerdida)
 		self.mostrarEstadisticas()
 	}
 	
-	method ganarVida(vidaGanada){
-		vida = vida + vidaGanada
+	override method ganarVida(vidaGanada){
+		super(vidaGanada)
 		self.mostrarEstadisticas()
 	}
 	
 	method perderMana(manaPerdido){
 		const manaProximo = mana - manaPerdido
 		if(manaProximo  <= 0){
-			mana = 0
+			self.mana(0)
 		} else {
-			mana = manaProximo 
+			self.mana(manaProximo) 
 		}
 		self.mostrarEstadisticas()
 	}
 	
 	method ganarMana(manaGanado){
-		mana = mana + manaGanado
+		self.mana(mana + manaGanado)
 		self.mostrarEstadisticas()
 	}	
 	
 	method guardarDinero(valorAAgregar) {
-		dinero += valorAAgregar
+		self.dinero(dinero + valorAAgregar)
 		game.say(self, dinero.toString())
 	}
 	
