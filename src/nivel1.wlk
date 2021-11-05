@@ -5,7 +5,7 @@ import elementos.*
 import nivel2.*
 
 object nivel1 {
-	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7))
+	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7), vida = 50)
 	
 	const elementosDelMapa = [
 		new ConsumibleDeMana(cantidad=15, position= game.at(5,5)),
@@ -30,13 +30,23 @@ object nivel1 {
 		new Barra(position=game.at(9,0))
 	]
 	
+	const enemigosDelMapa = [
+		new Arana(position=game.at(6,8), vida = 1),
+		new Arana(position=game.at(6,6), vida = 1),
+		new Arana(position=game.at(6,4), vida = 1),
+		new Arana(position=game.at(6,2), vida = 1)
+	]
+	
 	method configurate() {
 		game.addVisual(new Fondo(image="emptyMap.png"))
 		
 		elementosDelMapa.forEach({ elemento => game.addVisual(elemento) })
+		enemigosDelMapa.forEach({ enemigo => game.addVisual(enemigo) })
 		
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
+		
+		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo => enemigo.hacerMovimientoRandom() }) })
 		
 		keyboard.t().onPressDo({ self.terminar() })
 		
