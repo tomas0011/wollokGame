@@ -6,54 +6,31 @@ class Elemento {
 	var property position
 
 	method image()	
-	method esInamobible()
-	method tieneEfecto()
+	method esInamobible() = false
+	method tieneEfecto() = false
 	method esJugable() = false
 	method esDeBarra() = false
 }
 
-class ElementoMovil inherits Elemento {
+class ElementoMovil inherits Elemento {		
+	method noHay(objetos) = objetos.size() == 0
 	
-	override method esInamobible() = false
+	method esElementoDeBarra(objetos) = objetos.any({ elemento => elemento.esDeBarra() })
 	
-	override method tieneEfecto() = false
-	
-	override method esDeBarra() = false
+	method sePuedeAvanzarCon(objetos) = objetos.any({ elemento => not elemento.esInamobible()})
 	
 	method puedeMover(direccion, direccionSiguiente) {
 		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
 		const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
-		
-		if (
-			objetosEncontradosEnConsiguiente.all({ elemento => elemento.esDeBarra() })
-		) {
-			return true
-		} else {
-			return (objetosEncontradosEnSiguiente.size() == 0) 
-				|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() and not elemento.esDeBarra() })) 
-				and (objetosEncontradosEnConsiguiente.size() == 0) 
-				|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() and not elemento.esDeBarra() }))	
-		}
+		return (
+			self.noHay(objetosEncontradosEnSiguiente)
+			or (
+				self.sePuedeAvanzarCon(objetosEncontradosEnSiguiente) 
+				and self.noHay(objetosEncontradosEnConsiguiente)
+			) or self.sePuedeAvanzarCon(objetosEncontradosEnConsiguiente)
+			or self.esElementoDeBarra(objetosEncontradosEnConsiguiente)
+		)
 	}
-	
-	/*method movimiento(siguientePosicion,consiguientePosicion, condicion, coordenadaEnCasoDeBorde ){
-		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
-		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
-		if (
-			(objetosEncontradosEnSiguiente.size() == 0) 
-			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
-			and (objetosEncontradosEnConsiguiente.size() == 0) 
-			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
-			
-			
-		) {
-			if (condicion) {
-				position = coordenadaEnCasoDeBorde
-			} else {
-				position = siguientePosicion
-			}
-		}
-	}*/
 
 	method subir() {
 		const siguientePosicion = position.up(1)
@@ -68,15 +45,6 @@ class ElementoMovil inherits Elemento {
 			}
 		}
 	}
-	/*method subir() {
-		const siguientePosicion = position.up(1)
-		const y = siguientePosicion.y()
-		const x = siguientePosicion.x()
-		const consiguientePosicion = position.up(2)
-		const condicion = y == gameSize.height()
-		const posicionEnCasoDeBorde = game.at(x,1)
-		self.movimiento(siguientePosicion,consiguientePosicion, condicion , posicionEnCasoDeBorde  )
-	}*/
 	
 	method bajar() {
 		const siguientePosicion = position.down(1)
@@ -93,7 +61,6 @@ class ElementoMovil inherits Elemento {
 	}
 	
 	method moverDerecha() {
-		
 		const siguientePosicion = position.right(1)
 		const consiguientePosicion = position.right(2)
 		const x =  siguientePosicion.x()
@@ -108,7 +75,6 @@ class ElementoMovil inherits Elemento {
 	}
 	
 	method moverIzquierda() {
-		
 		const siguientePosicion = position.left(1)
 		const consiguientePosicion = position.left(2)
 		const x =  siguientePosicion.x()
@@ -123,23 +89,12 @@ class ElementoMovil inherits Elemento {
 	}
 }
 
-
-
-
-
-
-
-
 class ElementoInmovil inherits Elemento {
 	override method esInamobible() = true
-	override method tieneEfecto() = false
-	override method esDeBarra() = false
 }
 
 class Objeto inherits Elemento {
-	override method esInamobible() = false
 	override method tieneEfecto() = true
-	override method esDeBarra() = false
 	method activarEfectoEn(personaje)
 }
 
@@ -205,12 +160,10 @@ class Bloque inherits ElementoMovil {
 	override method image() = "market.png" 	
 }
 
-
-
-class Barra inherits ElementoInmovil {
-	override method image() = "barra.png"
-	
+class Barra inherits Elemento {
 	override method esDeBarra() = true	
+	
+	override method image() = "barra.png"
 }
 
 
