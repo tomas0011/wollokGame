@@ -5,7 +5,7 @@ import elementos.*
 import nivel2.*
 
 object nivel1 {
-	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7))
+	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7), vida = 50)
 	
 	const elementosDelMapa = [
 		new ConsumibleDeMana(cantidad=15, position= game.at(5,5)),
@@ -16,24 +16,13 @@ object nivel1 {
 		new Bloque(position=game.at(3,5)),
 		new Bloque(position=game.at(3,7)),
 		new Muro(position=game.at(6,6))
-		
-		/*
-		new Barra(position=game.at(0,0)),
-		new Barra(position=game.at(1,0)),
-		new Barra(position=game.at(2,0)),
-		new Barra(position=game.at(3,0)),
-		new Barra(position=game.at(4,0)),
-		new Barra(position=game.at(5,0)),
-		new Barra(position=game.at(6,0)),
-		new Barra(position=game.at(7,0)),
-		new Barra(position=game.at(8,0)),
-		new Barra(position=game.at(9,0)),
-		new Barra(position=game.at(10,0)),
-		new Barra(position=game.at(11,0)),
-		new Barra(position=game.at(12,0)),
-		new Barra(position=game.at(13,0)),
-		new Barra(position=game.at(14,0))
-		*/
+	]
+	
+	const enemigosDelMapa = [
+		new Arana(position=game.at(6,8), vida = 1),
+		new Arana(position=game.at(6,6), vida = 1),
+		new Arana(position=game.at(6,4), vida = 1),
+		new Arana(position=game.at(6,2), vida = 1)
 	]
 	
 	method configurate() {
@@ -44,9 +33,12 @@ object nivel1 {
 		
 		
 		elementosDelMapa.forEach({ elemento => game.addVisual(elemento) })
+		enemigosDelMapa.forEach({ enemigo => game.addVisual(enemigo) })
 		
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
+		
+		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo => enemigo.hacerMovimientoRandom() }) })
 		
 		keyboard.t().onPressDo({ self.terminar() })
 		
