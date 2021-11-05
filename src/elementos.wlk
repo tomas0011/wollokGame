@@ -8,51 +8,55 @@ class Elemento {
 	method image()	
 	method esInamobible()
 	method tieneEfecto()
+	method esDeBarra()
 }
 
 class ElementoMovil inherits Elemento {
 	
 	override method esInamobible() = false
 	override method tieneEfecto() = false
-	
-	
-	method efectoPacman(siguientePosicion,consiguientePosicion, condicion, coordenadaEnCasoDeBorde ){
-		const objetosEncontrados = game.getObjectsIn(siguientePosicion)
-		const x = siguientePosicion.x()
-		const y = siguientePosicion.y()
+	override method esDeBarra() = false
+	method puedeMover(direccion, direccionSiguiente) {
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
+		const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
 		
-		if (objetosEncontrados.size() == 0 ||(objetosEncontrados.all({ elemento => not elemento.esInamobible() }) and game.getObjectsIn(consiguientePosicion).size() == 0) ) {
+		if (
+			objetosEncontradosEnConsiguiente.all({ elemento => elemento.esDeBarra() })
+		) {
+			return true
+		} else {
+			return (objetosEncontradosEnSiguiente.size() == 0) 
+				|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() and not elemento.esDeBarra() })) 
+				and (objetosEncontradosEnConsiguiente.size() == 0) 
+				|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() and not elemento.esDeBarra() }))	
+		}
+	}
+	
+	/*method movimiento(siguientePosicion,consiguientePosicion, condicion, coordenadaEnCasoDeBorde ){
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
+		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
+		if (
+			(objetosEncontradosEnSiguiente.size() == 0) 
+			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
+			and (objetosEncontradosEnConsiguiente.size() == 0) 
+			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
+			
+			
+		) {
 			if (condicion) {
 				position = coordenadaEnCasoDeBorde
 			} else {
 				position = siguientePosicion
 			}
 		}
-	}
-	
+	}*/
+
 	method subir() {
-		/*const siguientePosicion = position.up(1)
-		const y = siguientePosicion.y()
-		const x = siguientePosicion.x()
-		const consiguientePosicion = position.up(2)
-		const condicion = y == 10
-		const posicionEnCasoDeBorde = game.at(x,1)
-		self.efectoPacman(siguientePosicion,consiguientePosicion, condicion , posicionEnCasoDeBorde  )
-		*/
-		
-		
 		const siguientePosicion = position.up(1)
 		const consiguientePosicion = position.up(2)
-		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
-		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
-		if (
-			(objetosEncontradosEnSiguiente.size() == 0) 
-			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
-			and (objetosEncontradosEnConsiguiente.size() == 0) 
-			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
-		) {
+		if (self.puedeMover(siguientePosicion, consiguientePosicion)) {
 			if (y == gameSize.height()) {
 				position = game.at(x, 1)
 			} else {
@@ -60,23 +64,24 @@ class ElementoMovil inherits Elemento {
 			}
 		}
 	}
+	/*method subir() {
+		const siguientePosicion = position.up(1)
+		const y = siguientePosicion.y()
+		const x = siguientePosicion.x()
+		const consiguientePosicion = position.up(2)
+		const condicion = y == gameSize.height()
+		const posicionEnCasoDeBorde = game.at(x,1)
+		self.movimiento(siguientePosicion,consiguientePosicion, condicion , posicionEnCasoDeBorde  )
+	}*/
 	
 	method bajar() {
 		const siguientePosicion = position.down(1)
 		const consiguientePosicion = position.down(2)
-		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
-		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
-		
-		if (
-			(objetosEncontradosEnSiguiente.size() == 0) 
-			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
-			and (objetosEncontradosEnConsiguiente.size() == 0) 
-			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
-		) {
+		if (self.puedeMover(siguientePosicion, consiguientePosicion)) {
 			if (y == 0) {
-				position = game.at(x, gameSize.height() - 1)
+				position = game.at(x, gameSize.height()-1)
 			} else {
 				position = siguientePosicion	
 			}
@@ -84,19 +89,12 @@ class ElementoMovil inherits Elemento {
 	}
 	
 	method moverDerecha() {
+		
 		const siguientePosicion = position.right(1)
 		const consiguientePosicion = position.right(2)
-		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
-		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
-		
-		if (
-			(objetosEncontradosEnSiguiente.size() == 0) 
-			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
-			and (objetosEncontradosEnConsiguiente.size() == 0) 
-			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
-		) {
+		if (self.puedeMover(siguientePosicion, consiguientePosicion)) {
 			if (x == gameSize.width()) {
 				position = game.at(0, y)
 			} else {
@@ -106,21 +104,14 @@ class ElementoMovil inherits Elemento {
 	}
 	
 	method moverIzquierda() {
+		
 		const siguientePosicion = position.left(1)
 		const consiguientePosicion = position.left(2)
-		const objetosEncontradosEnSiguiente = game.getObjectsIn(siguientePosicion)
-		const objetosEncontradosEnConsiguiente = game.getObjectsIn(consiguientePosicion)
 		const x =  siguientePosicion.x()
 		const y =  siguientePosicion.y()
-		
-		if (
-			(objetosEncontradosEnSiguiente.size() == 0) 
-			|| (objetosEncontradosEnSiguiente.all({ elemento => not elemento.esInamobible() })) 
-			and (objetosEncontradosEnConsiguiente.size() == 0) 
-			|| (objetosEncontradosEnConsiguiente.all({ elemento => elemento.tieneEfecto() }))
-		) {
+		if (self.puedeMover(siguientePosicion, consiguientePosicion)) {
 			if (x == -1) {
-				position = game.at(gameSize.width() - 1, y)
+				position = game.at(gameSize.width()-1, y)
 			} else {
 				position = siguientePosicion	
 			}
@@ -128,14 +119,23 @@ class ElementoMovil inherits Elemento {
 	}
 }
 
+
+
+
+
+
+
+
 class ElementoInmovil inherits Elemento {
 	override method esInamobible() = true
 	override method tieneEfecto() = false
+	override method esDeBarra() = false
 }
 
 class Objeto inherits Elemento {
 	override method esInamobible() = false
 	override method tieneEfecto() = true
+	override method esDeBarra() = false
 	method activarEfectoEn(personaje)
 }
 
@@ -199,6 +199,15 @@ class Muro inherits ElementoInmovil {
 
 class Bloque inherits ElementoMovil {
 	override method image() = "market.png" 	
+}
+
+
+
+class Barra inherits Elemento {
+	override method image() = "barra.png"
+	override method esInamobible() = true
+	override method tieneEfecto() = false
+	override method esDeBarra() = true	
 }
 
 

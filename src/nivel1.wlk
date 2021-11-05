@@ -15,7 +15,19 @@ object nivel1 {
 		new Llave(position=game.at(5,9)),
 		new Bloque(position=game.at(3,5)),
 		new Bloque(position=game.at(3,7)),
-		new Muro(position=game.at(6,6))
+		new Muro(position=game.at(6,6)),
+		
+		
+		new Barra(position=game.at(0,0)),
+		new Barra(position=game.at(1,0)),
+		new Barra(position=game.at(2,0)),
+		new Barra(position=game.at(3,0)),
+		new Barra(position=game.at(4,0)),
+		new Barra(position=game.at(5,0)),
+		new Barra(position=game.at(6,0)),
+		new Barra(position=game.at(7,0)),
+		new Barra(position=game.at(8,0)),
+		new Barra(position=game.at(9,0))
 	]
 	
 	method configurate() {
@@ -46,7 +58,6 @@ object nivel1 {
 		
 		keyboard.down().onPressDo({ 			
 			personajePrincipal.bajar()
-			console.println("bajando")
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
@@ -64,7 +75,6 @@ object nivel1 {
 		keyboard.right().onPressDo({ 
 
 			personajePrincipal.moverDerecha()
-			console.println("a la derecha")
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
@@ -82,7 +92,6 @@ object nivel1 {
 		keyboard.left().onPressDo({ 
 
 			personajePrincipal.moverIzquierda()
-			console.println("a la izquierda")
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {

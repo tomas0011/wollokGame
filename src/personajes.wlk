@@ -1,3 +1,4 @@
+
 import wollok.game.*
 import nivel1.*
 import elementos.*
@@ -11,8 +12,9 @@ import elementos.*
 class Numero {
 	var property position
 	var property image = "mana (0).png"
-	method esInamobible() = false
+	method esInamobible() = true
 	method tieneEfecto() = false
+	method esDeBarra() = true
 	
 	method cambiarNumeroA_(num){
 		self.image(num + ".png")
