@@ -15,9 +15,9 @@ object nivel1 {
 		new Llave(position=game.at(5,9)),
 		new Bloque(position=game.at(3,5)),
 		new Bloque(position=game.at(3,7)),
-		new Muro(position=game.at(6,6)),
+		new Muro(position=game.at(6,6))
 		
-		
+		/*
 		new Barra(position=game.at(0,0)),
 		new Barra(position=game.at(1,0)),
 		new Barra(position=game.at(2,0)),
@@ -27,11 +27,21 @@ object nivel1 {
 		new Barra(position=game.at(6,0)),
 		new Barra(position=game.at(7,0)),
 		new Barra(position=game.at(8,0)),
-		new Barra(position=game.at(9,0))
+		new Barra(position=game.at(9,0)),
+		new Barra(position=game.at(10,0)),
+		new Barra(position=game.at(11,0)),
+		new Barra(position=game.at(12,0)),
+		new Barra(position=game.at(13,0)),
+		new Barra(position=game.at(14,0))
+		*/
 	]
 	
 	method configurate() {
 		game.addVisual(new Fondo(image="emptyMap.png"))
+		
+		
+		(gameSize.width()+1).times( { i =>  game.addVisual( new Barra(position=game.at(i-1,0)) ) } )
+		
 		
 		elementosDelMapa.forEach({ elemento => game.addVisual(elemento) })
 		

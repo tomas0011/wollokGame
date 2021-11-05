@@ -2,7 +2,7 @@
 import wollok.game.*
 import nivel1.*
 import elementos.*
-
+import configuracion.*
 // en la implementación real, conviene tener un personaje por nivel
 // los personajes probablemente tengan un comportamiendo más complejo que solamente
 // imagen y posición
@@ -21,10 +21,6 @@ class Numero {
 	}
 }
 
-//class Texto {
-//	var property position
-//	var property text
-//}
 
 class Personaje inherits ElementoMovil {
 	
@@ -61,41 +57,72 @@ class PersonajePrincipal inherits ElementoMovil {
 	method mostrarEstadisticas(){
 		const vidaString = vida.toString().split("")
 		const manaString = mana.toString().split("")
-//		const llaveString = llaves.size().toString().split("")
-//		const dineroString = dinero.toString().split("")
+		const llaveString = llaves.size().toString().split("")
+		const dineroString = dinero.toString().split("")
 		
-		if (vidaString.size() == 1) { 
-			vidaString.add("-")
+		if (vidaString.size() == 1) {
+			vidaString.add("fondo-vida")
 		}
 		if (manaString.size() == 1) { 
-			manaString.add("-")
+			manaString.add("fondo-mana")
 		}
-//		if (llaveString.size() == 1) { 
-//			llaveString.add("-")
-//		}
-//		if (dineroString.size() == 1){ 
-//			dineroString.add("--")
-//		} else if (dineroString.size() == 2) { 
-//			dineroString.add("-")
-//		}
+		if (llaveString.size() == 1) { 
+			llaveString.add("fondo-llave")
+		}
+		if (dineroString.size() == 1){ 
+			dineroString.add("fondo-moneda")
+		} 
+		if (dineroString.size() == 2) { 
+			dineroString.add("fondo-moneda")
+		}
+
+
+		const fsFondoVida = new Numero(position = game.at(1,0), image = "fondo-vida.png")
+		const scFondoVida = new Numero(position = game.at(2,0), image = "fondo-vida.png")	
 		
-		const fsVida = new Numero(position = game.at(0,0), image = "vida ("+vidaString.get(0)+").png")		
-		const scVida = new Numero(position = game.at(1,0), image = "vida ("+vidaString.get(1)+").png")
+		const fsVida = new Numero(position = game.at(1,0), image = vidaString.get(0) + ".png")		
+		const scVida = new Numero(position = game.at(2,0), image = vidaString.get(1) + ".png")
 		
-		const fsMana = new Numero(position = game.at(3,0), image = "mana ("+manaString.get(0)+").png")		
-		const scMana = new Numero(position = game.at(4,0), image = "mana ("+manaString.get(1)+").png")
+		const fsFondoMana = new Numero(position = game.at(4,0), image = "fondo-mana.png")
+		const scFondoMana = new Numero(position = game.at(5,0), image = "fondo-mana.png")	
 		
-//		const textLlave = new Texto(position= game.at(6,0), text= llaveString)
-//		
-//		const textDinero = new Texto(position= game.at(18,0), text= dineroString)
+		const fsMana = new Numero(position = game.at(4,0), image = manaString.get(0) + ".png")		
+		const scMana = new Numero(position = game.at(5,0), image = manaString.get(1) + ".png")
 		
+		
+		const w = gameSize.width()
+		
+		const scFondoLlave= new Numero(position = game.at(w-7,0), image = "fondo-llave.png")
+		const fsLlave = new Numero(position= game.at(w-7,0), image = llaveString.get(0) + ".png")
+		
+		const fsFondoDinero= new Numero(position = game.at(w-5,0), image = "fondo-moneda.png")
+		const scFondoDinero= new Numero(position = game.at(w-4,0), image = "fondo-moneda.png")
+		const trFondoDinero= new Numero(position = game.at(w-3,0), image = "fondo-moneda.png")	
+		
+		const fsDinero= new Numero(position= game.at(w-5,0), image = dineroString.get(0)+".png")
+		const scDinero= new Numero(position= game.at(w-4,0), image = dineroString.get(1)+".png")
+		const trDinero= new Numero(position= game.at(w-3,0), image = dineroString.get(2)+".png")
+		
+		game.addVisual(fsFondoVida)
+		game.addVisual(scFondoVida)
 		game.addVisual(fsVida)
 		game.addVisual(scVida)
+		
+		game.addVisual(fsFondoMana)
+		game.addVisual(scFondoMana)
 		game.addVisual(fsMana)
 		game.addVisual(scMana)
 		
-//		game.addVisual(textLlave)
-//		game.addVisual(textDinero)
+		game.addVisual(scFondoLlave)
+		game.addVisual(fsLlave)
+		
+		game.addVisual(fsFondoDinero)
+		game.addVisual(scFondoDinero)
+		game.addVisual(trFondoDinero)
+		game.addVisual(fsDinero)
+		game.addVisual(scDinero)
+		game.addVisual(trDinero)
+		
 	}
 	
 	method perderVida(vidaPerdida){
@@ -131,12 +158,12 @@ class PersonajePrincipal inherits ElementoMovil {
 	
 	method guardarDinero(valorAAgregar) {
 		dinero += valorAAgregar
-		game.say(self, dinero.toString())
+		self.mostrarEstadisticas()
 	}
 	
 	method guardarLlave(nuevaLlave) {
 		llaves.add(nuevaLlave)
-		game.say(self, llaves.size().toString())
+		self.mostrarEstadisticas()
 	}
 }
 
