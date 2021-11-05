@@ -2,7 +2,7 @@ import wollok.game.*
 
 object gameSize {
 	method height() = 10
-	method width() = 10
+	method width() = 20
 }
 
 class Fondo {
