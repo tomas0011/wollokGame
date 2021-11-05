@@ -8,14 +8,17 @@ class Elemento {
 	method image()	
 	method esInamobible()
 	method tieneEfecto()
-	method esDeBarra()
+	method esDeBarra() = false
 }
 
 class ElementoMovil inherits Elemento {
 	
 	override method esInamobible() = false
+	
 	override method tieneEfecto() = false
+	
 	override method esDeBarra() = false
+	
 	method puedeMover(direccion, direccionSiguiente) {
 		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
 		const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
@@ -203,10 +206,9 @@ class Bloque inherits ElementoMovil {
 
 
 
-class Barra inherits Elemento {
+class Barra inherits ElementoInmovil {
 	override method image() = "barra.png"
-	override method esInamobible() = true
-	override method tieneEfecto() = false
+	
 	override method esDeBarra() = true	
 }
 
