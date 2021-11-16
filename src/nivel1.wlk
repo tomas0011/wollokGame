@@ -8,7 +8,7 @@ object nivel1 {
 	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7), vida = 50)
 	
 	const elementosDelMapa = [
-		new ConsumibleDeMana(cantidad=15, position= game.at(5,5)),
+		/*new ConsumibleDeMana(cantidad=15, position= game.at(5,5)),
 		new ConsumibleDeVida(cantidad=15, position= game.at(5,6)),
 		new Dinero(position=game.at(5,7), valor=10),
 		new Llave(position=game.at(5,8)),
@@ -17,13 +17,20 @@ object nivel1 {
 		new Bloque(position=game.at(3,7)),
 		new Muro(position=game.at(6,6)),
 		new Muro(position=game.at(2,1))
+		*/
+		
+		new Bloque(position=game.at(5,6)),
+		new Bloque(position=game.at(7,6)),
+		new Bloque(position=game.at(6,5)),
+		new Bloque(position=game.at(6,7))
+		
 	]
 	
 	const enemigosDelMapa = [
-		new Arana(position=game.at(6,8), vida = 1),
+		//new Arana(position=game.at(6,8), vida = 1),
 		new Arana(position=game.at(6,6), vida = 1),
-		new Arana(position=game.at(6,4), vida = 1),
-		new Arana(position=game.at(6,2), vida = 1)
+		//new Arana(position=game.at(6,4), vida = 1),
+		//new Arana(position=game.at(6,2), vida = 1)
 	]
 	
 	method configurate() {
@@ -39,7 +46,7 @@ object nivel1 {
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
 		
-		// game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo => enemigo.hacerMovimientoRandom() }) })
+		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo => enemigo.hacerMovimientoRandom() }) })
 		
 		keyboard.t().onPressDo({ self.terminar() })
 		

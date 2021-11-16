@@ -48,6 +48,15 @@ class Enemigo inherits Personaje {
 	}
 	
 	method hacerMovimientoRandom()
+	
+	override method puedeMover(direccion, direccionSiguiente) {
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
+		//const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
+		return (
+			self.noHay(objetosEncontradosEnSiguiente)
+		)
+	}
+	
 }
 
 class Arana inherits Enemigo {
