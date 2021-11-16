@@ -15,7 +15,8 @@ object nivel1 {
 		new Llave(position=game.at(5,9)),
 		new Bloque(position=game.at(3,5)),
 		new Bloque(position=game.at(3,7)),
-		new Muro(position=game.at(6,6))
+		new Muro(position=game.at(6,6)),
+		new Muro(position=game.at(2,1))
 	]
 	
 	const enemigosDelMapa = [
@@ -29,7 +30,7 @@ object nivel1 {
 		game.addVisual(new Fondo(image="emptyMap.png"))
 		
 		
-		(gameSize.width()+1).times( { i =>  game.addVisual( new Barra(position=game.at(i-1,0)) ) } )
+		(gameSize.width() + 1).times( { i =>  game.addVisual( new Barra(position=game.at(i - 1, 0)) ) } )
 		
 		
 		elementosDelMapa.forEach({ elemento => game.addVisual(elemento) })
@@ -38,7 +39,7 @@ object nivel1 {
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
 		
-		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo => enemigo.hacerMovimientoRandom() }) })
+		// game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo => enemigo.hacerMovimientoRandom() }) })
 		
 		keyboard.t().onPressDo({ self.terminar() })
 		
