@@ -10,6 +10,7 @@ class Elemento {
 	method tieneEfecto() = false
 	method esJugable() = false
 	method esDeBarra() = false
+	method esDeposito() = false
 }
 
 class ElementoMovil inherits Elemento {		
@@ -26,10 +27,13 @@ class ElementoMovil inherits Elemento {
 		const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
 		return (
 			self.noHay(objetosEncontradosEnSiguiente)
+			or self.esDeposito()
 			or self.tienenEfecto(objetosEncontradosEnSiguiente)
 			or (
 				self.noSonInamobibles(objetosEncontradosEnSiguiente)
-				and self.noHay(objetosEncontradosEnConsiguiente)
+				and (
+					self.noHay(objetosEncontradosEnConsiguiente)
+				)
 			) or self.esElementoDeBarra(objetosEncontradosEnSiguiente)
 		)
 	}
@@ -152,6 +156,11 @@ class Dinero inherits Objeto {
 	override method activarEfectoEn(personaje) {
 		self.serAgarradaPor(personaje)
 	}
+}
+
+class Deposito inherits Elemento {
+	override method image() = "natureWall.png"
+	override method esDeposito() = true
 }
 
 class Muro inherits ElementoInmovil {

@@ -16,14 +16,15 @@ object nivel1 {
 		new Bloque(position=game.at(3,5)),
 		new Bloque(position=game.at(3,7)),
 		new Muro(position=game.at(6,6)),
-		new Muro(position=game.at(2,1))
+		new Muro(position=game.at(2,1)),
+		new Deposito(position=game.at(2,2))
 	]
 	
 	const enemigosDelMapa = [
-		new Arana(position=game.at(6,8), vida = 1)
-//		new Arana(position=game.at(6,6), vida = 1),
-//		new Arana(position=game.at(6,4), vida = 1),
-//		new Arana(position=game.at(6,2), vida = 1)
+		new Arana(position=game.at(6,8), vida = 1),
+		new Arana(position=game.at(6,6), vida = 1),
+		new Arana(position=game.at(6,4), vida = 1),
+		new Arana(position=game.at(6,2), vida = 1)
 	]
 	
 	method configurate() {
@@ -39,14 +40,14 @@ object nivel1 {
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
 		
-		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo =>
-			const distancia = enemigo.position().distance(personajePrincipal.position())
-			if (distancia < 3) {
-				enemigo.moverHacia(personajePrincipal)				
-			} else {
-				enemigo.hacerMovimientoRandom()	
-			}
-		})})
+//		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo =>
+//			const distancia = enemigo.position().distance(personajePrincipal.position())
+//			if (distancia < 3) {
+//				enemigo.moverHacia(personajePrincipal)				
+//			} else {
+//				enemigo.hacerMovimientoRandom()	
+//			}
+//		})})
 		
 		keyboard.t().onPressDo({ self.terminar() })
 		
@@ -88,7 +89,9 @@ object nivel1 {
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (not collider.tieneEfecto()) {
+					if (collider.esDeposito()) {
+						collider.say("asdasdasd")
+					} else if (not collider.tieneEfecto()) {
 						collider.moverDerecha()
 					} else {
 						collider.activarEfectoEn(personajePrincipal)

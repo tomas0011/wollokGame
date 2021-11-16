@@ -6,7 +6,6 @@ import nivel1.*
 
 program juego_aventura {
 	game.title("Oh qué aventura objetosa")
-	// Le puse height 10 porque en mi compu no se llega a ver
 	game.height(gameSize.height())
 	game.width(gameSize.width())
 	game.boardGround("mapa.png")
