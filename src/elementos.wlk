@@ -17,18 +17,20 @@ class ElementoMovil inherits Elemento {
 	
 	method esElementoDeBarra(objetos) = objetos.any({ elemento => elemento.esDeBarra() })
 	
-	method sePuedeAvanzarCon(objetos) = objetos.any({ elemento => not elemento.esInamobible()})
+	method noSonInamobibles(objetos) = objetos.any({ elemento => not elemento.esInamobible()})
+	
+	method tienenEfecto(objetos) = objetos.any({ elemento => elemento.tieneEfecto()})
 	
 	method puedeMover(direccion, direccionSiguiente) {
 		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
 		const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
 		return (
 			self.noHay(objetosEncontradosEnSiguiente)
+			or self.tienenEfecto(objetosEncontradosEnSiguiente)
 			or (
-				self.sePuedeAvanzarCon(objetosEncontradosEnSiguiente) 
+				self.noSonInamobibles(objetosEncontradosEnSiguiente)
 				and self.noHay(objetosEncontradosEnConsiguiente)
-			) or self.sePuedeAvanzarCon(objetosEncontradosEnConsiguiente)
-			or self.esElementoDeBarra(objetosEncontradosEnConsiguiente)
+			) or self.esElementoDeBarra(objetosEncontradosEnSiguiente)
 		)
 	}
 
