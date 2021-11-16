@@ -92,10 +92,14 @@ object nivel1 {
 	]
 	
 	const enemigosDelMapa = [
+
 		//new Arana(position=game.at(6,8), vida = 1),
-		new Arana(position=game.at(6,6), vida = 1)
+		new Arana(position=game.at(6,6), vida = 1),
 		//new Arana(position=game.at(6,4), vida = 1),
 		//new Arana(position=game.at(6,2), vida = 1)
+
+		new Arana(position=game.at(6,8), vida = 1)
+
 	]
 	
 	method configurate() {
@@ -111,7 +115,14 @@ object nivel1 {
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
 		
-		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo => enemigo.hacerMovimientoRandom() }) })
+		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo =>
+			const distancia = enemigo.position().distance(personajePrincipal.position())
+			if (distancia < 3) {
+				enemigo.moverHacia(personajePrincipal)				
+			} else {
+				enemigo.hacerMovimientoRandom()	
+			}
+		})})
 		
 		keyboard.t().onPressDo({ self.terminar() })
 		
@@ -184,7 +195,7 @@ object nivel1 {
 	
 	method terminar() {
 		
-		game.clear()
+		//game.clear()
 		game.addVisual(new Fondo(image="gameover.png"))
 		/*game.addVisual(personajePrincipal)
 		game.schedule(2500, {

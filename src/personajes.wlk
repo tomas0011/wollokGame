@@ -68,19 +68,6 @@ class Arana inherits Enemigo {
 		jugadoresEncontrados.forEach({ jugador => self.quitarVidaA(jugador) })
 	}
 	
-	override method hacerMovimientoRandom() {
-		const direccionAleatorea = 0.randomUpTo(5).truncate(0)
-		if (direccionAleatorea == 1) {
-			self.subir()
-		} else if (direccionAleatorea == 2) {
-			self.bajar()
-		} else if (direccionAleatorea == 3) {
-			self.moverIzquierda()
-		} else {
-			self.moverDerecha()
-		}
-	}
-	
 	override method subir() {
 		super()
 		self.danarPersonajeSiExiste()
@@ -99,6 +86,32 @@ class Arana inherits Enemigo {
 	override method moverDerecha() {
 		super()
 		self.danarPersonajeSiExiste()
+	}
+	
+	override method hacerMovimientoRandom() {
+		const direccionAleatorea = 0.randomUpTo(5).truncate(0)
+		if (direccionAleatorea == 1) {
+			self.subir()
+		} else if (direccionAleatorea == 2) {
+			self.bajar()
+		} else if (direccionAleatorea == 3) {
+			self.moverIzquierda()
+		} else {
+			self.moverDerecha()
+		}
+	}
+	
+	method moverHacia(personaje) {
+		const distancia = self.position().distance(personaje.position()) 
+		if (self.position().up(1).distance(personaje.position()) < distancia) {
+			self.subir()
+		} else if (self.position().down(1).distance(personaje.position()) < distancia) {
+			self.bajar()
+		} else if (self.position().left(1).distance(personaje.position()) < distancia) {
+			self.moverIzquierda()
+		} else {
+			self.moverDerecha()
+		}
 	}
 }
 
@@ -208,8 +221,8 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	override method perderVida(vidaPerdida){
-		super(vidaPerdida)
-		self.mostrarEstadisticas()
+			super(vidaPerdida)
+			self.mostrarEstadisticas()
 	}
 	
 	override method ganarVida(vidaGanada){
@@ -218,13 +231,16 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	method perderMana(manaPerdido){
-		const manaProximo = mana - manaPerdido
-		if(manaProximo  <= 0){
-			self.mana(0)
-		} else {
-			self.mana(manaProximo) 
+		if (mana != 0){		
+			const manaProximo = mana - manaPerdido
+			if(manaProximo  <= 0){
+				self.mana(0)
+			} else {
+				self.mana(manaProximo) 
+			}
+			self.mostrarEstadisticas()
+
 		}
-		self.mostrarEstadisticas()
 	}
 	
 	method ganarMana(manaGanado){
