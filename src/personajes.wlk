@@ -48,6 +48,15 @@ class Enemigo inherits Personaje {
 	}
 	
 	method hacerMovimientoRandom()
+	
+	override method puedeMover(direccion, direccionSiguiente) {
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
+		//const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
+		return (
+			self.noHay(objetosEncontradosEnSiguiente)
+		)
+	}
+	
 }
 
 class Arana inherits Enemigo {
@@ -107,7 +116,7 @@ class Arana inherits Enemigo {
 }
 
 class PersonajePrincipal inherits Personaje {
-	var property mana = 99
+	var property mana = 30
 	var property dinero = 0
 	const llaves = []
 	
@@ -136,6 +145,11 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	method mostrarEstadisticas(){
+		
+		if (mana == 0){
+			nivel1.terminar()
+		}
+		
 		const vidaString = vida.toString().split("")
 		const manaString = mana.toString().split("")
 		const llaveString = llaves.size().toString().split("")
@@ -207,8 +221,8 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	override method perderVida(vidaPerdida){
-		super(vidaPerdida)
-		self.mostrarEstadisticas()
+			super(vidaPerdida)
+			self.mostrarEstadisticas()
 	}
 	
 	override method ganarVida(vidaGanada){
@@ -217,13 +231,16 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	method perderMana(manaPerdido){
-		const manaProximo = mana - manaPerdido
-		if(manaProximo  <= 0){
-			self.mana(0)
-		} else {
-			self.mana(manaProximo) 
+		if (mana != 0){		
+			const manaProximo = mana - manaPerdido
+			if(manaProximo  <= 0){
+				self.mana(0)
+			} else {
+				self.mana(manaProximo) 
+			}
+			self.mostrarEstadisticas()
+
 		}
-		self.mostrarEstadisticas()
 	}
 	
 	method ganarMana(manaGanado){
