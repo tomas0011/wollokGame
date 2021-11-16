@@ -8,16 +8,6 @@ object nivel1 {
 	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7), vida = 50)
 	
 	const elementosDelMapa = [
-		/*new ConsumibleDeMana(cantidad=15, position= game.at(5,5)),
-		new ConsumibleDeVida(cantidad=15, position= game.at(5,6)),
-		new Dinero(position=game.at(5,7), valor=10),
-		new Llave(position=game.at(5,8)),
-		new Llave(position=game.at(5,9)),
-		new Bloque(position=game.at(3,5)),
-		new Bloque(position=game.at(3,7)),
-		new Muro(position=game.at(6,6)),
-		new Muro(position=game.at(2,1))
-		*/
 		new Muro(position=game.at(0,1)),
 		new Muro(position=game.at(1,1)),
 		new Muro(position=game.at(2,1)),
@@ -92,12 +82,7 @@ object nivel1 {
 	]
 	
 	const enemigosDelMapa = [
-
-		//new Arana(position=game.at(6,8), vida = 1),
 		new Arana(position=game.at(6,6), vida = 1),
-		//new Arana(position=game.at(6,4), vida = 1),
-		//new Arana(position=game.at(6,2), vida = 1)
-
 		new Arana(position=game.at(6,8), vida = 1)
 
 	]
