@@ -103,7 +103,7 @@ class Arana inherits Enemigo {
 }
 
 class PersonajePrincipal inherits Personaje {
-	var property mana = 99
+	var property mana = 30
 	var property dinero = 0
 	const llaves = []
 	
@@ -132,6 +132,11 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	method mostrarEstadisticas(){
+		
+		if (mana == 0){
+			nivel1.terminar()
+		}
+		
 		const vidaString = vida.toString().split("")
 		const manaString = mana.toString().split("")
 		const llaveString = llaves.size().toString().split("")
