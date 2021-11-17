@@ -31,6 +31,11 @@ class ElementoMovil inherits Elemento {
 				self.noSonInamobibles(objetosEncontradosEnSiguiente)
 				and self.noHay(objetosEncontradosEnConsiguiente)
 			) or self.esElementoDeBarra(objetosEncontradosEnSiguiente)
+			or (
+				self.noSonInamobibles(objetosEncontradosEnSiguiente)
+				and
+				self.esElementoDeBarra(objetosEncontradosEnConsiguiente)
+			)
 		)
 	}
 

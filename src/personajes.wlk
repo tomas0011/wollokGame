@@ -228,8 +228,8 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	method perderMana(manaPerdido){
-		if (mana >= 2){		
-			const manaProximo = mana - manaPerdido
+		const manaProximo = mana - manaPerdido
+		if (manaProximo >= 1){		
 			if(manaProximo  <= 0){
 				self.mana(0)
 			} else {
