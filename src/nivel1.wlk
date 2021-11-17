@@ -4,6 +4,34 @@ import personajes.*
 import elementos.*
 import nivel2.*
 
+//<<<<<<< HEAD
+
+
+class Nivel{
+	var property xPersonaje
+	var property yPersonaje
+	
+	var property mapa
+	const personajePrincipal = new PersonajePrincipal(position = game.at(xPersonaje,yPersonaje), vida = 50)
+	const posicionesParaCeldasTrampa = []
+	const elementos = [
+		{x,y => "Elemento de descarte"},
+		{x,y => new Muro(position = game.at(x,y))},
+		{x,y => new Bloque(position = game.at(x,y))},
+		{x,y => new Dinero(position = game.at(x,y), valor = 10)},
+		{x,y => new ConsumibleDeVida(position = game.at(x,y), cantidad= 10)},
+		{x,y => new ConsumibleDeMana(position = game.at(x,y), cantidad = 10)},
+		{x,y => new Llave(position = game.at(x,y))},
+		{x,y => new Arana(position = game.at(x,y), vida = 1)}
+	]
+	
+	
+	const celdasTrampa = [
+		{x,y => new CeldaTrampa_Mana(position = game.at(x,y))},
+		{x,y => new CeldaTrampa_Vida(position = game.at(x,y))},
+		{x,y => new CeldaTrampa_Teletransporte(position = game.at(x,y))}
+		]
+/*/=======
 object nivel1 {
 	var property losEnemigosDescansan = false
 	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7), vida = 50)
@@ -19,57 +47,32 @@ object nivel1 {
 		[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
 		[1,1,1,1,1,0,0,1,0,0,0,0,5,0,0,0,5,0,0,1],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	]
+>>>>>>> develop*/
 	
 	
-	const elementos = [
-		{x,y => "Elemento de descarte"},
-		{x,y => new Muro(position = game.at(x,y))},
-		{x,y => new Bloque(position = game.at(x,y))},
-		{x,y => new Dinero(position = game.at(x,y), valor = 10)},
-		{x,y => new ConsumibleDeVida(position = game.at(x,y), cantidad= 10)},
-		{x,y => new ConsumibleDeMana(position = game.at(x,y), cantidad = 10)},
-		{x,y => new Llave(position = game.at(x,y))}
-	]
-	/*
-	*  0: nada
-	*  1: muro
-	*  2: caja
-	*  3: moneda
-	* 	4: vida
-	*  5: mana
-	*  6: llave
-	*  7: araña
-	*/
 	
-	const enemigosDelMapa = [
-		new Arana(position=game.at(6,6), vida = 1),
-		new Arana(position=game.at(7,8), vida = 1)
-	]
+	method posicionesParaAgregar() =posicionesParaCeldasTrampa 
+
+	
+	
 	
 	method configurate() {
 		
 		game.addVisual(new Fondo(image="emptyMap.png"))
 		(gameSize.width() + 1).times( { i =>  game.addVisual( new Barra(position=game.at(i - 1, 0)) ) } )
-		enemigosDelMapa.forEach({ enemigo => game.addVisual(enemigo) })
 		self.generarMapa()
 		
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
 		
-		game.onTick(600, 'movimientoDeEnemigos', {
-			self.losEnemigosDescansan(not self.losEnemigosDescansan())
-			enemigosDelMapa.forEach({ enemigo =>
-				const distancia = enemigo.position().distance(personajePrincipal.position())
-				if (distancia < enemigo.vision()) {
-					enemigo.moverHacia(personajePrincipal)				
-				} else {
-					if (not self.losEnemigosDescansan()) {
-						enemigo.hacerMovimientoRandom()	
-					}
-				}
-			})
-		})
+		/*game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo =>
+			const distancia = enemigo.position().distance(personajePrincipal.position())
+			if (distancia < 3) {
+				enemigo.moverHacia(personajePrincipal)				
+			} else {
+				enemigo.hacerMovimientoRandom()	
+			}
+		})})*/
 		
 		keyboard.t().onPressDo({ self.terminar() })
 		
@@ -149,14 +152,20 @@ object nivel1 {
 			y = y+1
 			fila.forEach( { columna => 
 				const valorEnMapa = mapa.get((y-9).abs()).get(x)
-				elementos.get(valorEnMapa).apply(x,y)
-				if (valorEnMapa > 0){
+				//elementos.get(valorEnMapa).apply(x,y)
+				if (valorEnMapa != 0 and valorEnMapa != 8){
 					game.addVisual( elementos.get(valorEnMapa).apply(x,y) )
+				} else if (valorEnMapa == 8) {
+					var randNum = 0.randomUpTo(2).truncate(0)
+					game.addVisual(celdasTrampa.get(randNum).apply(x,y))
+				}else {
+					posicionesParaCeldasTrampa.add( [ x,y ] )									
 				}
 				
 				x = x+1
 			} )
 		} )
+		console.println(posicionesParaCeldasTrampa)
 	}
 	
 	
@@ -177,6 +186,24 @@ object nivel1 {
 	}
 		
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

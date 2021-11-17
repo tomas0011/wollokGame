@@ -31,6 +31,11 @@ class ElementoMovil inherits Elemento {
 				self.noSonInamobibles(objetosEncontradosEnSiguiente)
 				and self.noHay(objetosEncontradosEnConsiguiente)
 			) or self.esElementoDeBarra(objetosEncontradosEnSiguiente)
+			or (
+				self.noSonInamobibles(objetosEncontradosEnSiguiente)
+				and
+				self.esElementoDeBarra(objetosEncontradosEnConsiguiente)
+			)
 		)
 	}
 
@@ -177,6 +182,34 @@ class Numero inherits ElementoInmovil {
 	}
 }
 
+
+
+
+class CeldaTrampa inherits Objeto{
+	override method image() = "celda-sorpresa.png"
+}
+
+class CeldaTrampa_Mana inherits CeldaTrampa {
+	override method activarEfectoEn(personaje){
+		personaje.perderMana(10)
+	}
+}
+class CeldaTrampa_Vida inherits CeldaTrampa {
+	override method activarEfectoEn(personaje){
+		personaje.perderVida(10)
+	}
+}
+
+class CeldaTrampa_Teletransporte inherits CeldaTrampa {
+	override method activarEfectoEn(personaje){
+		const numeroRandom = 0.randomUpTo(niveles.nivel().posicionesParaAgregar().size()).truncate(0)
+		const posicionElegida = niveles.nivel().posicionesParaAgregar().get(numeroRandom)
+		const x = posicionElegida .get(0)
+		const y = posicionElegida .get(1)
+		niveles.nivel().posicionesParaAgregar().remove(posicionElegida)
+		personaje.position(game.at(x,y))
+	}
+}
 
 
 
