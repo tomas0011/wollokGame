@@ -10,6 +10,7 @@ class Elemento {
 	method tieneEfecto() = false
 	method esJugable() = false
 	method esDeBarra() = false
+	method esDeposito() = false
 }
 
 class ElementoMovil inherits Elemento {		
@@ -21,15 +22,21 @@ class ElementoMovil inherits Elemento {
 	
 	method tienenEfecto(objetos) = objetos.any({ elemento => elemento.tieneEfecto()})
 	
+	method hayDepositos(objetos) = objetos.any({ elemento => elemento.esDeposito() })
+	
 	method puedeMover(direccion, direccionSiguiente) {
 		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
 		const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
 		return (
 			self.noHay(objetosEncontradosEnSiguiente)
+			or self.hayDepositos(objetosEncontradosEnSiguiente)
 			or self.tienenEfecto(objetosEncontradosEnSiguiente)
 			or (
 				self.noSonInamobibles(objetosEncontradosEnSiguiente)
-				and self.noHay(objetosEncontradosEnConsiguiente)
+				and (
+					self.noHay(objetosEncontradosEnConsiguiente)
+					or self.hayDepositos(objetosEncontradosEnConsiguiente)
+				)
 			) or self.esElementoDeBarra(objetosEncontradosEnSiguiente)
 			or (
 				self.noSonInamobibles(objetosEncontradosEnSiguiente)
@@ -159,12 +166,96 @@ class Dinero inherits Objeto {
 	}
 }
 
+class Deposito inherits Elemento {
+	var property carga = 0
+	
+	var property imagen = "deposito.png"
+	
+	method cargaMaxima() = 3
+	
+	method cerrar() {
+		self.imagen("depositoCerrado.png")
+	}
+	
+	override method image() = imagen
+	
+	override method esDeposito() = true
+}
+
 class Muro inherits ElementoInmovil {
 	override method image() = "natureWall.png"
 }
 
 class Bloque inherits ElementoMovil {
 	override method image() = "market.png" 	
+	
+	override method subir() {
+		super()
+		if (game.colliders(self).size() > 0) {
+			game.colliders(self).forEach({ collider => 
+				if (collider.esDeposito()) {
+					if (collider.carga() < collider.cargaMaxima()) {
+						collider.carga(collider.carga() + 1)
+						if (collider.carga() >= collider.cargaMaxima()) {
+							collider.cerrar()
+						}
+					}
+					game.removeVisual(self)	
+				}
+			})
+		}
+	}
+	
+	override method bajar() {
+		super()
+		if (game.colliders(self).size() > 0) {
+			game.colliders(self).forEach({ collider => 
+				if (collider.esDeposito()) {
+					if (collider.carga() < collider.cargaMaxima()) {
+						collider.carga(collider.carga() + 1)
+						if (collider.carga() >= collider.cargaMaxima()) {
+							collider.cerrar()
+						}
+					}
+					game.removeVisual(self)	
+				}
+			})
+		}
+	}
+	
+	override method moverDerecha() {
+		super()
+		if (game.colliders(self).size() > 0) {
+			game.colliders(self).forEach({ collider => 
+				if (collider.esDeposito()) {
+					if (collider.carga() < collider.cargaMaxima()) {
+						collider.carga(collider.carga() + 1)
+						if (collider.carga() >= collider.cargaMaxima()) {
+							collider.cerrar()
+						}
+					}
+					game.removeVisual(self)	
+				}
+			})
+		}
+	}
+	
+	override method moverIzquierda() {
+		super()
+		if (game.colliders(self).size() > 0) {
+			game.colliders(self).forEach({ collider => 
+				if (collider.esDeposito()) {
+					if (collider.carga() < collider.cargaMaxima()) {
+						collider.carga(collider.carga() + 1)
+						if (collider.carga() >= collider.cargaMaxima()) {
+							collider.cerrar()
+						}
+					}
+					game.removeVisual(self)	
+				}
+			})
+		}
+	}
 }
 
 class Barra inherits Elemento {
@@ -185,7 +276,7 @@ class Numero inherits ElementoInmovil {
 
 
 
-class CeldaTrampa inherits Objeto{
+class CeldaTrampa inherits Objeto {
 	override method image() = "celda-sorpresa.png"
 }
 

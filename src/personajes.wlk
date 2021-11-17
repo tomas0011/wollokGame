@@ -107,7 +107,7 @@ class Arana inherits Enemigo {
 }
 
 class PersonajePrincipal inherits Personaje {
-	var property mana = 90
+	var property mana = 99
 	var property dinero = 0
 	const llaves = []
 	
