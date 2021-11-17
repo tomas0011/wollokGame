@@ -7,12 +7,14 @@ object gameSize {
 
 
 object niveles{
-	var nivelActual = 1
+	var nivelActual = 0
 	
-	method nivel1() = new Nivel( mapa = mapaNivel1.matrizMapa(), xPersonaje = 3, yPersonaje = 7)
-	method nivel2() = new Nivel( mapa = mapaNivel1.matrizMapa(), xPersonaje = 3, yPersonaje = 7)
+	const nivel1 = new Nivel( mapa = mapaNivel1.matrizMapa(), xPersonaje = 3, yPersonaje = 7)
+	const nivel2= new Nivel( mapa = mapaNivel2.matrizMapa(), xPersonaje = 3, yPersonaje = 7)
 	
-	method nivel() = return if (nivelActual == 1){ self.nivel1() } else { self.nivel2() }
+	const niveles = [nivel1,nivel2]
+	
+	method nivel() = niveles.get(nivelActual)
 }
 
 
@@ -31,6 +33,23 @@ object mapaNivel1{
 	]
 	
 	method matrizMapa() = return mapa
+}
+
+
+object mapaNivel2{
+	const mapa = [
+		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,1,0,6,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,6,0,1,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,1,0,0,0,1,1,1,0,1,0,0,0,0,0,1],
+		[1,0,0,0,0,1,1,1,0,1,6,0,0,1,0,0,0,0,0,1],
+		[1,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,0,6,0,1],
+		[1,0,0,6,0,1,0,0,0,6,0,0,0,1,0,0,0,0,0,1],
+		[0,0,0,0,0,1,0,0,0,1,0,0,2,1,0,0,0,0,0,0],
+		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+	]
+	method matrizMapa() = mapa
 }
 
 class Fondo {

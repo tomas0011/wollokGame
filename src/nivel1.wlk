@@ -4,9 +4,6 @@ import personajes.*
 import elementos.*
 import nivel2.*
 
-//<<<<<<< HEAD
-
-
 class Nivel{
 	var property xPersonaje
 	var property yPersonaje
@@ -30,7 +27,11 @@ class Nivel{
 		{x,y => new ConsumibleDeMana(position = game.at(x,y), cantidad = 10)},
 		{x,y => new Llave(position = game.at(x,y))},
 		{x,y => new Arana(position = game.at(x,y), vida = 1)},
-		{x,y => new Deposito(position=game.at(x,y))}
+		{x,y => new Deposito(position=game.at(x,y))},
+		{x,y => 
+			const randNum = 0.randomUpTo(3).truncate(0)
+			return celdasTrampa.get(randNum).apply(x,y)
+		}
 	]
 	
 	const enemigosDelMapa = [
@@ -91,7 +92,6 @@ class Nivel{
 					}
 				}
 			}
-//			game.onCollideDo(personajePrincipal, {a => a.subir()})
 		})
 		
 		keyboard.down().onPressDo({ 			
@@ -114,7 +114,6 @@ class Nivel{
 					}
 				}
 			}
-//			game.onCollideDo(personajePrincipal, {a => a.bajar()})
 		})
 		
 		keyboard.right().onPressDo({ 
@@ -138,7 +137,6 @@ class Nivel{
 					}
 				}
 			}
-//			game.onCollideDo(personajePrincipal, {a => a.moverDerecha()})
 		})
 		
 		keyboard.left().onPressDo({ 
@@ -162,7 +160,6 @@ class Nivel{
 					}
 				}
 			}
-//			game.onCollideDo(personajePrincipal, {a => a.moverIzquierda()})
 		})
 	}
 	
@@ -175,12 +172,8 @@ class Nivel{
 			y = y + 1
 			fila.forEach( { columna => 
 				const valorEnMapa = mapa.get((y-9).abs()).get(x)
-				//elementos.get(valorEnMapa).apply(x,y)
-				if (valorEnMapa != 0 and valorEnMapa != 8){
+				if (valorEnMapa != 0){
 					game.addVisual( elementos.get(valorEnMapa).apply(x,y) )
-				} else if (valorEnMapa == 9) {
-					var randNum = 0.randomUpTo(2).truncate(0)
-					game.addVisual(celdasTrampa.get(randNum).apply(x,y))
 				} else {
 					posicionesParaCeldasTrampa.add( [ x,y ] )									
 				}
