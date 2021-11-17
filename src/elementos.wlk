@@ -1,5 +1,5 @@
 import wollok.game.*
-import nivel1.*
+//import nivel1.*
 import configuracion.*
 
 class Elemento {	
