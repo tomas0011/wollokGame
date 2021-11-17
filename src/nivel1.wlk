@@ -7,6 +7,47 @@ import nivel2.*
 object nivel1 {
 	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7), vida = 50)
 	
+	
+	const mapa = [
+		[1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,6,1,0,0,0,0,7,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,1,0,0,4,0,0,0,0,0,0,1,0,0,1],
+		[1,0,0,0,0,0,1,0,3,3,3,3,3,3,3,0,1,0,0,1],
+		[1,0,0,0,7,0,1,0,1,1,1,1,1,1,1,0,1,0,0,1],
+		[0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,7,0,0],
+		[0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,2,0],
+		[0,0,0,0,0,0,0,0,0,0,1,0,0,0,7,0,0,0,0,0],
+		[1,1,1,1,1,0,0,1,0,0,0,0,5,0,0,0,5,0,0,1],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+	]
+	
+	
+	const elementos = [
+		{x,y => "Elemento de descarte"},
+		{x,y => new Muro(position = game.at(x,y))},
+		{x,y => new Bloque(position = game.at(x,y))},
+		{x,y => new Dinero(position = game.at(x,y), valor = 10)},
+		{x,y => new ConsumibleDeVida(position = game.at(x,y), cantidad= 10)},
+		{x,y => new ConsumibleDeMana(position = game.at(x,y), cantidad = 10)},
+		{x,y => new Llave(position = game.at(x,y))},
+		{x,y => new Arana(position = game.at(x,y), vida = 1)}
+	]
+		/*
+	 *  0: nada
+	 *  1: muro
+	 *  2: caja
+	 *  3: moneda
+	 * 	4: vida
+	 *  5: mana
+	 *  6: llave
+	 *  7: araña
+	 *  8: personaje
+	 * 
+	 */
+	
+	
+	
+	
 	const elementosDelMapa = [
 		new Muro(position=game.at(0,1)),
 		new Muro(position=game.at(1,1)),
@@ -88,14 +129,10 @@ object nivel1 {
 	]
 	
 	method configurate() {
+		
 		game.addVisual(new Fondo(image="emptyMap.png"))
-		
-		
 		(gameSize.width() + 1).times( { i =>  game.addVisual( new Barra(position=game.at(i - 1, 0)) ) } )
-		
-		
-		elementosDelMapa.forEach({ elemento => game.addVisual(elemento) })
-		enemigosDelMapa.forEach({ enemigo => game.addVisual(enemigo) })
+		self.generarMapa()
 		
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
@@ -177,6 +214,27 @@ object nivel1 {
 //			game.onCollideDo(personajePrincipal, {a => a.moverIzquierda()})
 		})
 	}
+	
+	
+	method generarMapa(){
+		var x = 0
+		var y = 0
+		mapa.forEach( { fila => 
+			x = 0
+			y = y+1
+			fila.forEach( { columna => 
+				const valorEnMapa = mapa.get((y-9).abs()).get(x)
+				elementos.get(valorEnMapa).apply(x,y)
+				if (valorEnMapa > 0){
+					game.addVisual( elementos.get(valorEnMapa).apply(x,y) )
+				}
+				
+				x = x+1
+			} )
+		} )
+	}
+	
+	
 	
 	method terminar() {
 		
