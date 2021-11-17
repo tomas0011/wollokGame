@@ -7,6 +7,8 @@ import nivel2.*
 object nivel1 {
 	const personajePrincipal = new PersonajePrincipal(position = game.at(3,7), vida = 50)
 	
+	var property losEnemigosDescansan = true
+	
 	const elementosDelMapa = [
 		/*new ConsumibleDeMana(cantidad=15, position= game.at(5,5)),
 		new ConsumibleDeVida(cantidad=15, position= game.at(5,6)),
@@ -98,7 +100,7 @@ object nivel1 {
 		//new Arana(position=game.at(6,4), vida = 1),
 		//new Arana(position=game.at(6,2), vida = 1)
 
-		new Arana(position=game.at(6,8), vida = 1)
+		new Arana(position=game.at(7,9), vida = 1)
 
 	]
 	
@@ -115,14 +117,19 @@ object nivel1 {
 		game.addVisual(personajePrincipal)
 		personajePrincipal.mostrarEstadisticas()
 		
-		game.onTick(1000, 'movimientoDeEnemigos', { enemigosDelMapa.forEach({ enemigo =>
-			const distancia = enemigo.position().distance(personajePrincipal.position())
-			if (distancia < 3) {
-				enemigo.moverHacia(personajePrincipal)				
-			} else {
-				enemigo.hacerMovimientoRandom()	
-			}
-		})})
+		game.onTick(500, 'movimientoDeEnemigos', {
+			self.losEnemigosDescansan(not self.losEnemigosDescansan())
+			enemigosDelMapa.forEach({ enemigo =>
+				const distancia = enemigo.position().distance(personajePrincipal.position())
+				if (distancia < enemigo.vision()) {
+					enemigo.moverHacia(personajePrincipal)				
+				} else {
+					if (not self.losEnemigosDescansan()) {
+						enemigo.hacerMovimientoRandom()	
+					}
+				}
+			})
+		})
 		
 		keyboard.t().onPressDo({ self.terminar() })
 		
