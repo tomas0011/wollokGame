@@ -173,6 +173,14 @@ class Barra inherits Elemento {
 	override method image() = "barra.png"
 }
 
+class Numero inherits ElementoInmovil {
+	var property image = "mana (0).png"
+	override method esDeBarra() = true
+	
+	method cambiarNumeroA_(num){
+		self.image(num + ".png")
+	}
+}
 
 
 
