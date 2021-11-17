@@ -157,7 +157,7 @@ object nivel1 {
 			fila.forEach( { columna => 
 				const valorEnMapa = mapa.get((y-9).abs()).get(x)
 				//elementos.get(valorEnMapa).apply(x,y)
-				if (valorEnMapa != 0 and valorEnMapa != 8){
+				if (valorEnMapa != 0){
 					game.addVisual( elementos.get(valorEnMapa).apply(x,y) )
 				} else {
 					posicionesParaCeldasTrampa.add( [ x,y ] )									
