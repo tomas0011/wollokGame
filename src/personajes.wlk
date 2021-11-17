@@ -51,7 +51,6 @@ class Enemigo inherits Personaje {
 	
 	override method puedeMover(direccion, direccionSiguiente) {
 		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
-		//const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
 		return (
 			self.noHay(objetosEncontradosEnSiguiente)
 		)
@@ -145,11 +144,6 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	method mostrarEstadisticas(){
-		
-		if (mana == 0){
-			nivel1.terminar()
-		}
-		
 		const vidaString = vida.toString().split("")
 		const manaString = mana.toString().split("")
 		const llaveString = llaves.size().toString().split("")
@@ -216,13 +210,16 @@ class PersonajePrincipal inherits Personaje {
 		game.addVisual(trFondoDinero)
 		game.addVisual(fsDinero)
 		game.addVisual(scDinero)
-		game.addVisual(trDinero)
-		
+		game.addVisual(trDinero)	
 	}
 	
 	override method perderVida(vidaPerdida){
+		if (vida >= 2){
 			super(vidaPerdida)
 			self.mostrarEstadisticas()
+		} else {
+			nivel1.terminar()
+		}
 	}
 	
 	override method ganarVida(vidaGanada){
@@ -231,7 +228,7 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	method perderMana(manaPerdido){
-		if (mana != 0){		
+		if (mana >= 2){		
 			const manaProximo = mana - manaPerdido
 			if(manaProximo  <= 0){
 				self.mana(0)
@@ -240,6 +237,8 @@ class PersonajePrincipal inherits Personaje {
 			}
 			self.mostrarEstadisticas()
 
+		} else {
+			nivel1.terminar()
 		}
 	}
 	
