@@ -1,6 +1,6 @@
 
 import wollok.game.*
-import nivel1.*
+//import nivel1.*
 import elementos.*
 import configuracion.*
 // en la implementación real, conviene tener un personaje por nivel
@@ -210,7 +210,7 @@ class PersonajePrincipal inherits Personaje {
 			super(vidaPerdida)
 			self.mostrarEstadisticas()
 		} else {
-			nivel1.terminar()
+			niveles.nivel().terminar()
 		}
 	}
 	
@@ -220,8 +220,8 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	method perderMana(manaPerdido){
-		if (mana >= 2){		
-			const manaProximo = mana - manaPerdido
+		const manaProximo = mana - manaPerdido
+		if (manaProximo >= 1){		
 			if(manaProximo  <= 0){
 				self.mana(0)
 			} else {
@@ -230,7 +230,7 @@ class PersonajePrincipal inherits Personaje {
 			self.mostrarEstadisticas()
 
 		} else {
-			nivel1.terminar()
+			niveles.nivel().terminar()
 		}
 	}
 	
