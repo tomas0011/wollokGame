@@ -7,21 +7,6 @@ import configuracion.*
 // los personajes probablemente tengan un comportamiendo más complejo que solamente
 // imagen y posición
 
-
-
-class Numero {
-	var property position
-	var property image = "mana (0).png"
-	method esInamobible() = true
-	method tieneEfecto() = false
-	method esDeBarra() = true
-	
-	method cambiarNumeroA_(num){
-		self.image(num + ".png")
-	}
-}
-
-
 class Personaje inherits ElementoMovil {
 	var property vida
 	
@@ -43,16 +28,21 @@ class Personaje inherits ElementoMovil {
 class Enemigo inherits Personaje {
 	var property dano = 10
 	
+	method hayJugables(objetos) = objetos.any({ elemento => elemento.esJugable()})
+	
 	method quitarVidaA(personaje) {
 		personaje.perderVida(dano)
 	}
 	
 	method hacerMovimientoRandom()
 	
+	method vision()
+	
 	override method puedeMover(direccion, direccionSiguiente) {
-		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
+		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccionSiguiente)
 		return (
 			self.noHay(objetosEncontradosEnSiguiente)
+			or self.hayJugables(objetosEncontradosEnSiguiente)
 		)
 	}
 	
@@ -66,6 +56,8 @@ class Arana inherits Enemigo {
 		const jugadoresEncontrados = objetosEncontradosEnSiguiente.filter({ elemento => elemento.esJugable() })
 		jugadoresEncontrados.forEach({ jugador => self.quitarVidaA(jugador) })
 	}
+	
+	override method vision() = 4
 	
 	override method subir() {
 		super()
@@ -88,14 +80,14 @@ class Arana inherits Enemigo {
 	}
 	
 	override method hacerMovimientoRandom() {
-		const direccionAleatorea = 0.randomUpTo(5).truncate(0)
-		if (direccionAleatorea == 1) {
+		const direccionAleatorea = 0.randomUpTo(4).truncate(0)
+		if (direccionAleatorea == 0) {
 			self.subir()
-		} else if (direccionAleatorea == 2) {
+		} else if (direccionAleatorea == 1) {
 			self.bajar()
-		} else if (direccionAleatorea == 3) {
+		} else if (direccionAleatorea == 2) {
 			self.moverIzquierda()
-		} else {
+		} else if (direccionAleatorea == 3) {
 			self.moverDerecha()
 		}
 	}
