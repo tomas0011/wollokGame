@@ -11,11 +11,11 @@ object nivel1 {
 	const mapa = [
 		[1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,6,1,0,0,0,0,7,0,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,1,0,0,4,0,0,0,0,0,0,1,0,0,1],
+		[1,0,0,0,0,0,1,0,0,4,0,0,0,0,0,0,1,0,2,1],
 		[1,0,0,0,0,0,1,0,3,3,3,3,3,3,3,0,1,0,0,1],
 		[1,0,0,0,7,0,1,0,1,1,1,1,1,1,1,0,1,0,0,1],
-		[0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,7,0,0],
-		[0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,2,0],
+		[0,0,2,0,0,0,1,0,0,0,1,0,0,0,0,0,1,7,0,0],
+		[0,0,8,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,2,0],
 		[0,0,0,0,0,0,0,0,0,0,1,0,0,0,7,0,0,0,0,0],
 		[1,1,1,1,1,0,0,1,0,0,0,0,5,0,0,0,5,0,0,1],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -30,7 +30,8 @@ object nivel1 {
 		{x,y => new ConsumibleDeVida(position = game.at(x,y), cantidad= 10)},
 		{x,y => new ConsumibleDeMana(position = game.at(x,y), cantidad = 10)},
 		{x,y => new Llave(position = game.at(x,y))},
-		{x,y => new Arana(position = game.at(x,y), vida = 1)}
+		{x,y => new Arana(position = game.at(x,y), vida = 1)},
+		{x,y => new Deposito(position=game.at(x,y))}
 	]
 		/*
 	 *  0: nada
@@ -41,7 +42,7 @@ object nivel1 {
 	 *  5: mana
 	 *  6: llave
 	 *  7: araña
-	 *  8: personaje
+	 *  8: deposito
 	 * 
 	 */
 	
@@ -153,7 +154,14 @@ object nivel1 {
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (not collider.tieneEfecto()) {
+					if (collider.esDeposito()) {
+						const faltantes = (collider.cargaMaxima() - collider.carga())
+						if (faltantes < 1) {
+							self.terminar()
+						} else {
+							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+						}
+					} else if (not collider.tieneEfecto()) {
 						collider.subir()
 					} else {
 						collider.activarEfectoEn(personajePrincipal)
@@ -169,7 +177,14 @@ object nivel1 {
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (not collider.tieneEfecto()) {
+					if (collider.esDeposito()) {
+						const faltantes = (collider.cargaMaxima() - collider.carga())
+						if (faltantes < 1) {
+							self.terminar()
+						} else {
+							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+						}
+					} else if (not collider.tieneEfecto()) {
 						collider.bajar()
 					} else {
 						collider.activarEfectoEn(personajePrincipal)
@@ -186,7 +201,14 @@ object nivel1 {
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (not collider.tieneEfecto()) {
+					if (collider.esDeposito()) {
+						const faltantes = (collider.cargaMaxima() - collider.carga())
+						if (faltantes < 1) {
+							self.terminar()
+						} else {
+							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+						}
+					} else if (not collider.tieneEfecto()) {
 						collider.moverDerecha()
 					} else {
 						collider.activarEfectoEn(personajePrincipal)
@@ -203,7 +225,14 @@ object nivel1 {
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (not collider.tieneEfecto()) {
+					if (collider.esDeposito()) {
+						const faltantes = (collider.cargaMaxima() - collider.carga())
+						if (faltantes < 1) {
+							self.terminar()
+						} else {
+							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+						}
+					} else if (not collider.tieneEfecto()) {
 						collider.moverIzquierda()
 					} else {
 						collider.activarEfectoEn(personajePrincipal)
