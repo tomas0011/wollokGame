@@ -1,5 +1,6 @@
 import wollok.game.*
 import nivel1.*
+import elementos.*
 object gameSize {
 	method height() = 10
 	method width() = 20
@@ -9,12 +10,15 @@ object gameSize {
 object niveles{
 	var nivelActual = 0
 	
-	const nivel1 = new Nivel( mapa = mapaNivel1.matrizMapa(), xPersonaje = 3, yPersonaje = 7)
-	const nivel2= new Nivel( mapa = mapaNivel2.matrizMapa(), xPersonaje = 3, yPersonaje = 7)
+	const nivel1 = new Nivel( mapa = mapaNivel1.matrizMapa(), xPersonaje = 3, yPersonaje = 7, puerta = "hola")
+	const nivel2= new Nivel( mapa = mapaNivel2.matrizMapa(), xPersonaje = 3, yPersonaje = 7, puerta = new Puerta(position = game.at(2,12)))
 	
 	const niveles = [nivel1,nivel2]
 	
 	method nivel() = niveles.get(nivelActual)
+	method pasarDeNivel(){
+		nivelActual = nivelActual + 1
+	}
 }
 
 
@@ -23,7 +27,7 @@ object mapaNivel1{
 		[1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,1,0,0,4,0,0,0,0,0,0,1,0,0,1],
-		[1,0,0,0,0,6,1,0,3,3,3,3,3,3,3,0,1,0,0,1],
+		[1,0,0,0,0,6,1,0,0,0,0,0,0,0,0,0,1,0,0,1],
 		[1,0,0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,0,1],
 		[0,0,2,0,2,0,1,0,0,0,1,0,0,9,0,0,1,0,0,0],
 		[0,0,8,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,2,0],
@@ -45,7 +49,7 @@ object mapaNivel2{
 		[1,0,0,0,0,1,1,1,0,1,6,0,0,1,0,0,0,0,0,1],
 		[1,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,0,6,0,1],
 		[1,0,0,6,0,1,0,0,0,6,0,0,0,1,0,0,0,0,0,1],
-		[0,0,0,0,0,1,0,0,0,1,0,0,2,1,0,0,0,0,0,0],
+		[0,0,0,0,0,1,0,0,0,1,0,0,10,1,0,0,0,0,0,0],
 		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	]

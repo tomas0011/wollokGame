@@ -7,9 +7,9 @@ import nivel2.*
 class Nivel{
 	var property xPersonaje
 	var property yPersonaje
-	
+	var property puerta
 	var property mapa
-	const personajePrincipal = new PersonajePrincipal(position = game.at(xPersonaje,yPersonaje), vida = 50)
+	const personajePrincipal = new PersonajePrincipal(position = game.at(xPersonaje,yPersonaje), vida = 100)
 	const posicionesParaCeldasTrampa = []
 		
 	const celdasTrampa = [
@@ -31,14 +31,14 @@ class Nivel{
 		{x,y => 
 			const randNum = 0.randomUpTo(3).truncate(0)
 			return celdasTrampa.get(randNum).apply(x,y)
-		}
+		},
+		{x,y => new Puerta(position=game.at(x,y))}
 	]
 	
 	const enemigosDelMapa = [
 		new Arana(position = game.at(7,4), vida = 1),
 		new Arana(position = game.at(9,2), vida = 1)
 	]
-	
 	/*
 	*  0: nada
 	*  1: muro
@@ -49,6 +49,8 @@ class Nivel{
 	*  6: llave
 	*  7: araña
 	*/
+	
+	method personaje() = return personajePrincipal
 	
 	method posicionesParaAgregar() = posicionesParaCeldasTrampa 	
 	
@@ -77,13 +79,21 @@ class Nivel{
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (collider.esDeposito()) {
-						const faltantes = (collider.cargaMaxima() - collider.carga())
+					if (collider.esAcumulador()) {
+						const faltantes = collider.faltantes()//
 						if (faltantes < 1) {
-							self.terminar()
+							self.pasarDeNivel()
 						} else {
-							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+							//game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })
+							game.say(collider, faltantes)	
 						}
+					
+					/*} else if (collider.esPuerta()){
+						if (collider.dineroTotal() >= collider.cantMax()){
+							self.finJuego()
+						} else {
+							game.say(collider, "aún falta dinero")
+						}*/
 					} else if (not collider.tieneEfecto()) {
 						collider.subir()
 					} else {
@@ -99,13 +109,21 @@ class Nivel{
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (collider.esDeposito()) {
-						const faltantes = (collider.cargaMaxima() - collider.carga())
+					if (collider.esAcumulador()) {
+						const faltantes = collider.faltantes()//
 						if (faltantes < 1) {
-							self.terminar()
+							self.pasarDeNivel()
 						} else {
-							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+							//game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })
+							game.say(collider, faltantes)	
 						}
+					
+					/*} else if (collider.esPuerta()){
+						if (collider.dineroTotal() >= collider.cantMax()){
+							self.finJuego()
+						} else {
+							game.say(collider, "aún falta dinero")
+						}*/
 					} else if (not collider.tieneEfecto()) {
 						collider.bajar()
 					} else {
@@ -122,13 +140,22 @@ class Nivel{
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (collider.esDeposito()) {
-						const faltantes = (collider.cargaMaxima() - collider.carga())
+					if (collider.esAcumulador()) {
+						
+						const faltantes = collider.faltantes()//
 						if (faltantes < 1) {
-							self.terminar()
+							self.pasarDeNivel()
 						} else {
-							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+							//game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })
+							game.say(collider, "faltan "+ faltantes.toString())	
 						}
+					
+					/*} else if (collider.esPuerta()){
+						if (collider.dineroTotal() >= collider.cantMax()){
+							self.finJuego()
+						} else {
+							game.say(collider, "aún falta dinero")
+						}*/
 					} else if (not collider.tieneEfecto()) {
 						collider.moverDerecha()
 					} else {
@@ -145,13 +172,21 @@ class Nivel{
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (collider.esDeposito()) {
-						const faltantes = (collider.cargaMaxima() - collider.carga())
+					if (collider.esAcumulador()) {
+						const faltantes = collider.faltantes()//
 						if (faltantes < 1) {
-							self.terminar()
+							self.pasarDeNivel()
 						} else {
-							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+							//game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })
+							game.say(collider, faltantes)	
 						}
+					
+					/*} else if (collider.esPuerta()){
+						if (collider.dineroTotal() >= collider.cantMax()){
+							self.finJuego()
+						} else {
+							game.say(collider, "aún falta dinero")
+						}*/
 					} else if (not collider.tieneEfecto()) {
 						collider.moverIzquierda()
 					} else {
@@ -181,10 +216,19 @@ class Nivel{
 				x = x+1
 			} )
 		} )
-		console.println(posicionesParaCeldasTrampa)
 	}
 	
-	
+	method pasarDeNivel(){
+		game.clear()
+		game.addVisual(new Fondo(image="youwin.png"))
+		niveles.pasarDeNivel()
+		
+		game.schedule(2500, {
+			game.clear()
+			niveles.nivel().configurate()
+			//game.addVisual(personajePrincipal)
+		})
+	}
 	
 	method terminar() {
 		
@@ -199,6 +243,10 @@ class Nivel{
 //				nivel2.configurate()
 			})
 		})¨*/
+	}
+	
+	method finJuego(){
+		self.terminar()
 	}
 		
 }

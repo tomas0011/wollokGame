@@ -11,6 +11,7 @@ class Elemento {
 	method esJugable() = false
 	method esDeBarra() = false
 	method esDeposito() = false
+	method esAcumulador() = false
 }
 
 class ElementoMovil inherits Elemento {		
@@ -22,20 +23,20 @@ class ElementoMovil inherits Elemento {
 	
 	method tienenEfecto(objetos) = objetos.any({ elemento => elemento.tieneEfecto()})
 	
-	method hayDepositos(objetos) = objetos.any({ elemento => elemento.esDeposito() })
+	method hayAcumuladores(objetos) = objetos.any({ elemento => elemento.esAcumulador() })
 	
 	method puedeMover(direccion, direccionSiguiente) {
 		const objetosEncontradosEnSiguiente = game.getObjectsIn(direccion)
 		const objetosEncontradosEnConsiguiente = game.getObjectsIn(direccionSiguiente)
 		return (
 			self.noHay(objetosEncontradosEnSiguiente)
-			or self.hayDepositos(objetosEncontradosEnSiguiente)
+			or self.hayAcumuladores(objetosEncontradosEnSiguiente)
 			or self.tienenEfecto(objetosEncontradosEnSiguiente)
 			or (
 				self.noSonInamobibles(objetosEncontradosEnSiguiente)
 				and (
 					self.noHay(objetosEncontradosEnConsiguiente)
-					or self.hayDepositos(objetosEncontradosEnConsiguiente)
+					or self.hayAcumuladores(objetosEncontradosEnConsiguiente)
 				)
 			) or self.esElementoDeBarra(objetosEncontradosEnSiguiente)
 			or (
@@ -162,11 +163,12 @@ class Dinero inherits Objeto {
 	}
 	
 	override method activarEfectoEn(personaje) {
+		personaje.perderVida(10)
 		self.serAgarradaPor(personaje)
 	}
 }
 
-class Deposito inherits Elemento {
+class Deposito inherits ElementoAcumulador {
 	var property carga = 0
 	
 	var property imagen = "deposito.png"
@@ -180,6 +182,8 @@ class Deposito inherits Elemento {
 	override method image() = imagen
 	
 	override method esDeposito() = true
+	
+	override method faltantes() = self.cargaMaxima() - self.carga()
 }
 
 class Muro inherits ElementoInmovil {
@@ -301,6 +305,72 @@ class CeldaTrampa_Teletransporte inherits CeldaTrampa {
 		personaje.position(game.at(x,y))
 	}
 }
+
+class Puerta inherits ElementoAcumulador {
+	/*var property image = "depositoCerrado.png"
+	var estaAbierta = false
+	var property cantMax = 5
+	var property dineroTotal = 0
+	override method esPuerta() = true
+	method abrirPuerta(personaje){
+		if (estaAbierta){
+			niveles.nivel().terminar()
+		} else {
+			game.say(self,"aun falta dinero")
+		}
+	}
+	
+	method sumarLlave(){
+		dineroTotal = dineroTotal + 1
+		console.println(dineroTotal)
+		if (dineroTotal >= cantMax){
+			estaAbierta = true
+			image("deposito.png")
+		}
+	}
+	*/
+	
+	
+	var property image = "depositoCerrado.png"
+	var property cerradurasAbiertas = 0
+	
+	
+	method cantidadDeCerraduras() = 5
+	
+	override method faltantes() = self.cantidadDeCerraduras() - self.cerradurasAbiertas()
+	
+	override method agregarDe(personaje){
+		self.agregarLlaves(personaje.llaves().size())
+		personaje.vaciarLlaves()
+	}
+	
+	method agregarLlaves(llaves){
+		
+		self.cerradurasAbiertas(cerradurasAbiertas + llaves )
+		if ( self.faltantes() <= 0 ){
+			self.image("deposito.png")
+		} 
+	}
+	
+	
+	
+}
+
+class ElementoAcumulador inherits Elemento {
+	override method esAcumulador() = true
+	
+	method faltantes()
+	
+	method agregarDe(personaje)
+	//method acumula()
+}
+
+
+
+
+
+
+
 
 
 
