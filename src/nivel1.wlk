@@ -25,7 +25,7 @@ class Nivel{
 		{x,y => new Arana(position = game.at(x,y), vida = 1)},
 		{x,y => 
 			var randNum = 0.randomUpTo(3).truncate(0)
-			game.addVisual(celdasTrampa.get(randNum).apply(x,y))
+			return celdasTrampa.get(randNum).apply(x,y)
 		}
 	]
 	
