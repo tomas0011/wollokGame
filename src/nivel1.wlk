@@ -22,7 +22,11 @@ class Nivel{
 		{x,y => new ConsumibleDeVida(position = game.at(x,y), cantidad= 10)},
 		{x,y => new ConsumibleDeMana(position = game.at(x,y), cantidad = 10)},
 		{x,y => new Llave(position = game.at(x,y))},
-		{x,y => new Arana(position = game.at(x,y), vida = 1)}
+		{x,y => new Arana(position = game.at(x,y), vida = 1)},
+		{x,y => 
+			var randNum = 0.randomUpTo(3).truncate(0)
+			return celdasTrampa.get(randNum).apply(x,y)
+		}
 	]
 	
 	
@@ -153,12 +157,9 @@ object nivel1 {
 			fila.forEach( { columna => 
 				const valorEnMapa = mapa.get((y-9).abs()).get(x)
 				//elementos.get(valorEnMapa).apply(x,y)
-				if (valorEnMapa != 0 and valorEnMapa != 8){
+				if (valorEnMapa != 0){
 					game.addVisual( elementos.get(valorEnMapa).apply(x,y) )
-				} else if (valorEnMapa == 8) {
-					var randNum = 0.randomUpTo(2).truncate(0)
-					game.addVisual(celdasTrampa.get(randNum).apply(x,y))
-				}else {
+				} else {
 					posicionesParaCeldasTrampa.add( [ x,y ] )									
 				}
 				

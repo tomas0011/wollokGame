@@ -10,6 +10,6 @@ program juego_aventura {
 	game.height(gameSize.height())
 	game.width(gameSize.width())
 	game.boardGround("mapa.png")
-	niveles.nivel1().configurate()
+	niveles.nivel().configurate()
 	game.start()
 }
