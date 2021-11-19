@@ -168,24 +168,6 @@ class Dinero inherits Objeto {
 	}
 }
 
-class Deposito inherits ElementoAcumulador {
-	var property carga = 0
-	
-	var property imagen = "deposito.png"
-	
-	method cargaMaxima() = 3
-	
-	method cerrar() {
-		self.imagen("depositoCerrado.png")
-	}
-	
-	override method image() = imagen
-	
-	override method esDeposito() = true
-	
-	override method faltantes() = self.cargaMaxima() - self.carga()
-}
-
 class Muro inherits ElementoInmovil {
 	override method image() = "natureWall.png"
 }
@@ -197,12 +179,12 @@ class Bloque inherits ElementoMovil {
 		super()
 		if (game.colliders(self).size() > 0) {
 			game.colliders(self).forEach({ collider => 
-				if (collider.esDeposito()) {
-					if (collider.carga() < collider.cargaMaxima()) {
-						collider.carga(collider.carga() + 1)
-						if (collider.carga() >= collider.cargaMaxima()) {
-							collider.cerrar()
-						}
+				if (collider.esAcumulador()) {
+					if (collider.faltantes() >= 1) {
+						collider.acumular(1)
+					}
+					if (collider.faltantes() == 0) {
+						collider.cerrar()
 					}
 					game.removeVisual(self)	
 				}
@@ -214,12 +196,12 @@ class Bloque inherits ElementoMovil {
 		super()
 		if (game.colliders(self).size() > 0) {
 			game.colliders(self).forEach({ collider => 
-				if (collider.esDeposito()) {
-					if (collider.carga() < collider.cargaMaxima()) {
-						collider.carga(collider.carga() + 1)
-						if (collider.carga() >= collider.cargaMaxima()) {
-							collider.cerrar()
-						}
+				if (collider.esAcumulador()) {
+					if (collider.faltantes() >= 1) {
+						collider.acumular(1)
+					}
+					if (collider.faltantes() == 0) {
+						collider.cerrar()
 					}
 					game.removeVisual(self)	
 				}
@@ -231,12 +213,12 @@ class Bloque inherits ElementoMovil {
 		super()
 		if (game.colliders(self).size() > 0) {
 			game.colliders(self).forEach({ collider => 
-				if (collider.esDeposito()) {
-					if (collider.carga() < collider.cargaMaxima()) {
-						collider.carga(collider.carga() + 1)
-						if (collider.carga() >= collider.cargaMaxima()) {
-							collider.cerrar()
-						}
+				if (collider.esAcumulador()) {
+					if (collider.faltantes() >= 1) {
+						collider.acumular(1)
+					}
+					if (collider.faltantes() == 0) {
+						collider.cerrar()
 					}
 					game.removeVisual(self)	
 				}
@@ -248,12 +230,12 @@ class Bloque inherits ElementoMovil {
 		super()
 		if (game.colliders(self).size() > 0) {
 			game.colliders(self).forEach({ collider => 
-				if (collider.esDeposito()) {
-					if (collider.carga() < collider.cargaMaxima()) {
-						collider.carga(collider.carga() + 1)
-						if (collider.carga() >= collider.cargaMaxima()) {
-							collider.cerrar()
-						}
+				if (collider.esAcumulador()) {
+					if (collider.faltantes() >= 1) {
+						collider.acumular(1)
+					}
+					if (collider.faltantes() == 0) {
+						collider.cerrar()
 					}
 					game.removeVisual(self)	
 				}
@@ -277,9 +259,6 @@ class Numero inherits ElementoInmovil {
 	}
 }
 
-
-
-
 class CeldaTrampa inherits Objeto {
 	override method image() = "celda-sorpresa.png"
 }
@@ -289,6 +268,7 @@ class CeldaTrampa_Mana inherits CeldaTrampa {
 		personaje.perderMana(10)
 	}
 }
+
 class CeldaTrampa_Vida inherits CeldaTrampa {
 	override method activarEfectoEn(personaje){
 		personaje.perderVida(10)
@@ -306,64 +286,73 @@ class CeldaTrampa_Teletransporte inherits CeldaTrampa {
 	}
 }
 
-class Puerta inherits ElementoAcumulador {
-	/*var property image = "depositoCerrado.png"
-	var estaAbierta = false
-	var property cantMax = 5
-	var property dineroTotal = 0
-	override method esPuerta() = true
-	method abrirPuerta(personaje){
-		if (estaAbierta){
-			niveles.nivel().terminar()
-		} else {
-			game.say(self,"aun falta dinero")
-		}
-	}
-	
-	method sumarLlave(){
-		dineroTotal = dineroTotal + 1
-		console.println(dineroTotal)
-		if (dineroTotal >= cantMax){
-			estaAbierta = true
-			image("deposito.png")
-		}
-	}
-	*/
-	
-	
-	var property image = "depositoCerrado.png"
-	var property cerradurasAbiertas = 0
-	
-	
-	method cantidadDeCerraduras() = 5
-	
-	override method faltantes() = self.cantidadDeCerraduras() - self.cerradurasAbiertas()
-	
-	override method agregarDe(personaje){
-		self.agregarLlaves(personaje.llaves().size())
-		personaje.vaciarLlaves()
-	}
-	
-	method agregarLlaves(llaves){
-		
-		self.cerradurasAbiertas(cerradurasAbiertas + llaves )
-		if ( self.faltantes() <= 0 ){
-			self.image("deposito.png")
-		} 
-	}
-	
-	
-	
-}
-
 class ElementoAcumulador inherits Elemento {
 	override method esAcumulador() = true
 	
 	method faltantes()
 	
+	method unidad()
+	
 	method agregarDe(personaje)
-	//method acumula()
+	
+	method acumular(cantidad)
 }
+
+class Deposito inherits ElementoAcumulador {
+	var property carga = 0
+	
+	var property imagen = "deposito.png"
+	
+	method cargaMaxima() = 3
+	
+	override method faltantes() = self.cargaMaxima() - self.carga()
+	
+	override method unidad() = if (self.faltantes() < 1) { "caja" } else { "cajas" } 
+	
+	override method agregarDe(personaje) {}
+	
+	override method acumular(cantidad) {
+		self.carga(self.carga() + cantidad)
+	}
+	
+	method cerrar() {
+		self.imagen("depositoCerrado.png")
+	}
+	
+	override method image() = imagen
+}
+
+class Puerta inherits ElementoAcumulador {
+	var property image = "PuertaCerrada.png"
+	
+	var property cerradurasAbiertas = 0
+	
+	method cantidadDeCerraduras() = 5
+	
+	override method faltantes() = self.cantidadDeCerraduras() - self.cerradurasAbiertas()
+	
+	override method unidad() = if (self.cantidadDeCerraduras() - cerradurasAbiertas < 1) { "llave" } else { "llaves" } 
+	
+	override method agregarDe(personaje){
+		const llavesAUsar = if (personaje.llaves().size() > self.faltantes()) { self.faltantes() } else { personaje.llaves().size() }
+		self.agregarLlaves(llavesAUsar)
+		personaje.quitarLlaves(llavesAUsar)
+	}
+	
+	override method acumular(cantidad) {}
+	
+	method agregarLlaves(llaves){
+		self.cerradurasAbiertas(cerradurasAbiertas + llaves )
+		if ( self.faltantes() == 0 ){
+			self.abrirPuerta()
+		} 
+	}	
+	
+	method abrirPuerta() {
+		self.image("puertaAbierta.png")
+	}
+}
+
 
 
 

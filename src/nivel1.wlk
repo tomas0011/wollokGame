@@ -2,9 +2,8 @@ import wollok.game.*
 import configuracion.*
 import personajes.*
 import elementos.*
-import nivel2.*
 
-class Nivel{
+class Nivel {
 	var property xPersonaje
 	var property yPersonaje
 	var property puerta
@@ -72,7 +71,7 @@ class Nivel{
 			}
 		})})
 		
-		keyboard.t().onPressDo({ self.terminar() })
+		// keyboard.t().onPressDo({ self.terminar() })
 		
 		keyboard.up().onPressDo({ 
 			personajePrincipal.subir()
@@ -80,20 +79,15 @@ class Nivel{
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
 					if (collider.esAcumulador()) {
-						const faltantes = collider.faltantes()//
+						const faltantes = collider.faltantes()
+						if (faltantes > 0) {
+							collider.agregarDe(personajePrincipal)
+							game.say(collider, "faltan " + collider.faltantes() + " " + collider.unidad())
+							console.println("faltan " + collider.faltantes() + " " + collider.unidad())
+						}
 						if (faltantes < 1) {
 							self.pasarDeNivel()
-						} else {
-							//game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })
-							game.say(collider, faltantes)	
 						}
-					
-					/*} else if (collider.esPuerta()){
-						if (collider.dineroTotal() >= collider.cantMax()){
-							self.finJuego()
-						} else {
-							game.say(collider, "aún falta dinero")
-						}*/
 					} else if (not collider.tieneEfecto()) {
 						collider.subir()
 					} else {
@@ -110,20 +104,15 @@ class Nivel{
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
 					if (collider.esAcumulador()) {
-						const faltantes = collider.faltantes()//
+						const faltantes = collider.faltantes()
+						if (faltantes > 0) {
+							collider.agregarDe(personajePrincipal)
+							game.say(collider, "faltan " + collider.faltantes() + " " + collider.unidad())
+							console.println("faltan " + collider.faltantes() + " " + collider.unidad())
+						}
 						if (faltantes < 1) {
 							self.pasarDeNivel()
-						} else {
-							//game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })
-							game.say(collider, faltantes)	
 						}
-					
-					/*} else if (collider.esPuerta()){
-						if (collider.dineroTotal() >= collider.cantMax()){
-							self.finJuego()
-						} else {
-							game.say(collider, "aún falta dinero")
-						}*/
 					} else if (not collider.tieneEfecto()) {
 						collider.bajar()
 					} else {
@@ -141,21 +130,15 @@ class Nivel{
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
 					if (collider.esAcumulador()) {
-						
-						const faltantes = collider.faltantes()//
+						const faltantes = collider.faltantes()
+						if (faltantes > 0) {
+							collider.agregarDe(personajePrincipal)
+							game.say(collider, "faltan " + collider.faltantes() + " " + collider.unidad())
+							console.println("faltan " + collider.faltantes() + " " + collider.unidad())
+						}
 						if (faltantes < 1) {
 							self.pasarDeNivel()
-						} else {
-							//game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })
-							game.say(collider, "faltan "+ faltantes.toString())	
 						}
-					
-					/*} else if (collider.esPuerta()){
-						if (collider.dineroTotal() >= collider.cantMax()){
-							self.finJuego()
-						} else {
-							game.say(collider, "aún falta dinero")
-						}*/
 					} else if (not collider.tieneEfecto()) {
 						collider.moverDerecha()
 					} else {
@@ -173,20 +156,14 @@ class Nivel{
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
 					if (collider.esAcumulador()) {
-						const faltantes = collider.faltantes()//
-						if (faltantes < 1) {
-							self.pasarDeNivel()
-						} else {
-							//game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })
-							game.say(collider, faltantes)	
+						const faltantes = collider.faltantes()
+						if (faltantes > 0) {
+							collider.agregarDe(personajePrincipal)
+							game.say(collider, "faltan " + collider.faltantes() + " " + collider.unidad())
 						}
-					
-					/*} else if (collider.esPuerta()){
-						if (collider.dineroTotal() >= collider.cantMax()){
-							self.finJuego()
-						} else {
-							game.say(collider, "aún falta dinero")
-						}*/
+						if (collider.faltantes() < 1) {
+							self.pasarDeNivel()
+						}
 					} else if (not collider.tieneEfecto()) {
 						collider.moverIzquierda()
 					} else {
@@ -226,29 +203,8 @@ class Nivel{
 		game.schedule(2500, {
 			game.clear()
 			niveles.nivel().configurate()
-			//game.addVisual(personajePrincipal)
 		})
-	}
-	
-	method terminar() {
-		
-		//game.clear()
-		game.addVisual(new Fondo(image="gameover.png"))
-		/*game.addVisual(personajePrincipal)
-		game.schedule(2500, {
-			game.clear()
-			game.addVisual(new Fondo(image="finNivel1.png"))
-			game.schedule(3000, {
-				game.clear()
-//				nivel2.configurate()
-			})
-		})¨*/
-	}
-	
-	method finJuego(){
-		self.terminar()
-	}
-		
+	}		
 }
 
 

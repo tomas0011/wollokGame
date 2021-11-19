@@ -110,11 +110,11 @@ class Arana inherits Enemigo {
 class PersonajePrincipal inherits Personaje {
 	var property mana = 99
 	var property dinero = 0
-	const llaves = []
+	const property llaves = []
 	
-	
-	method vaciarLlavero(){
-		llaves.clear()
+	method quitarLlaves(cantidad) {
+		cantidad.times({ i => llaves.remove(llaves.last()) })
+		self.mostrarEstadisticas()
 	}
 	
 	override method esJugable() = true
