@@ -11,8 +11,9 @@ class Personaje inherits ElementoMovil {
 	var property vida
 	
 	method perderVida(vidaPerdida){
+		
 		const vidaProxima = vida - vidaPerdida
-		if(vidaProxima <= 0){
+		if(vidaProxima >= 1){
 			//nivelBloques.terminar()
 			self.vida(0)
 		} else {
@@ -109,7 +110,12 @@ class Arana inherits Enemigo {
 class PersonajePrincipal inherits Personaje {
 	var property mana = 99
 	var property dinero = 0
-	const llaves = []
+	const property llaves = []
+	
+	method quitarLlaves(cantidad) {
+		cantidad.times({ i => llaves.remove(llaves.last()) })
+		self.mostrarEstadisticas()
+	}
 	
 	override method esJugable() = true
 	
@@ -206,10 +212,12 @@ class PersonajePrincipal inherits Personaje {
 	}
 	
 	override method perderVida(vidaPerdida){
-		if (vida >= 2){
-			super(vidaPerdida)
+		const vidaProxima = vida - vidaPerdida
+		if(vidaProxima >= 1){
+			vida = vidaProxima
 			self.mostrarEstadisticas()
 		} else {
+			vida = 0
 			niveles.nivel().terminar()
 		}
 	}
@@ -221,7 +229,7 @@ class PersonajePrincipal inherits Personaje {
 	
 	method perderMana(manaPerdido){
 		const manaProximo = mana - manaPerdido
-		if (manaProximo >= 1){		
+		if (manaProximo >= 1 and vida > 0){		
 			if(manaProximo  <= 0){
 				self.mana(0)
 			} else {

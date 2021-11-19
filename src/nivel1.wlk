@@ -2,14 +2,13 @@ import wollok.game.*
 import configuracion.*
 import personajes.*
 import elementos.*
-import nivel2.*
 
-class Nivel{
+class Nivel {
 	var property xPersonaje
 	var property yPersonaje
-	
+	var property puerta
 	var property mapa
-	const personajePrincipal = new PersonajePrincipal(position = game.at(xPersonaje,yPersonaje), vida = 50)
+	const personajePrincipal = new PersonajePrincipal(position = game.at(xPersonaje,yPersonaje), vida = 100)
 	const posicionesParaCeldasTrampa = []
 		
 	const celdasTrampa = [
@@ -31,14 +30,14 @@ class Nivel{
 		{x,y => 
 			const randNum = 0.randomUpTo(3).truncate(0)
 			return celdasTrampa.get(randNum).apply(x,y)
-		}
+		},
+		{x,y => new Puerta(position=game.at(x,y))}
 	]
 	
 	const enemigosDelMapa = [
 		new Arana(position = game.at(7,4), vida = 1),
 		new Arana(position = game.at(9,2), vida = 1)
 	]
-	
 	/*
 	*  0: nada
 	*  1: muro
@@ -49,6 +48,8 @@ class Nivel{
 	*  6: llave
 	*  7: araña
 	*/
+	
+	method personaje() = return personajePrincipal
 	
 	method posicionesParaAgregar() = posicionesParaCeldasTrampa 	
 	
@@ -70,19 +71,22 @@ class Nivel{
 			}
 		})})
 		
-		keyboard.t().onPressDo({ self.terminar() })
+		// keyboard.t().onPressDo({ self.terminar() })
 		
 		keyboard.up().onPressDo({ 
 			personajePrincipal.subir()
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (collider.esDeposito()) {
-						const faltantes = (collider.cargaMaxima() - collider.carga())
+					if (collider.esAcumulador()) {
+						const faltantes = collider.faltantes()
+						if (faltantes > 0) {
+							collider.agregarDe(personajePrincipal)
+							game.say(collider, "faltan " + collider.faltantes() + " " + collider.unidad())
+							console.println("faltan " + collider.faltantes() + " " + collider.unidad())
+						}
 						if (faltantes < 1) {
-							self.terminar()
-						} else {
-							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+							self.pasarDeNivel()
 						}
 					} else if (not collider.tieneEfecto()) {
 						collider.subir()
@@ -99,12 +103,15 @@ class Nivel{
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (collider.esDeposito()) {
-						const faltantes = (collider.cargaMaxima() - collider.carga())
+					if (collider.esAcumulador()) {
+						const faltantes = collider.faltantes()
+						if (faltantes > 0) {
+							collider.agregarDe(personajePrincipal)
+							game.say(collider, "faltan " + collider.faltantes() + " " + collider.unidad())
+							console.println("faltan " + collider.faltantes() + " " + collider.unidad())
+						}
 						if (faltantes < 1) {
-							self.terminar()
-						} else {
-							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+							self.pasarDeNivel()
 						}
 					} else if (not collider.tieneEfecto()) {
 						collider.bajar()
@@ -122,12 +129,15 @@ class Nivel{
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (collider.esDeposito()) {
-						const faltantes = (collider.cargaMaxima() - collider.carga())
+					if (collider.esAcumulador()) {
+						const faltantes = collider.faltantes()
+						if (faltantes > 0) {
+							collider.agregarDe(personajePrincipal)
+							game.say(collider, "faltan " + collider.faltantes() + " " + collider.unidad())
+							console.println("faltan " + collider.faltantes() + " " + collider.unidad())
+						}
 						if (faltantes < 1) {
-							self.terminar()
-						} else {
-							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+							self.pasarDeNivel()
 						}
 					} else if (not collider.tieneEfecto()) {
 						collider.moverDerecha()
@@ -145,12 +155,14 @@ class Nivel{
 			if (game.colliders(personajePrincipal).size() > 0) {
 				const collider = game.uniqueCollider(personajePrincipal)
 				if (not collider.esInamobible()) {
-					if (collider.esDeposito()) {
-						const faltantes = (collider.cargaMaxima() - collider.carga())
-						if (faltantes < 1) {
-							self.terminar()
-						} else {
-							game.say(collider, "faltan " + faltantes + if (faltantes > 1) { " cajas" } else { " caja" })	
+					if (collider.esAcumulador()) {
+						const faltantes = collider.faltantes()
+						if (faltantes > 0) {
+							collider.agregarDe(personajePrincipal)
+							game.say(collider, "faltan " + collider.faltantes() + " " + collider.unidad())
+						}
+						if (collider.faltantes() < 1) {
+							self.pasarDeNivel()
 						}
 					} else if (not collider.tieneEfecto()) {
 						collider.moverIzquierda()
@@ -181,26 +193,18 @@ class Nivel{
 				x = x+1
 			} )
 		} )
-		console.println(posicionesParaCeldasTrampa)
 	}
 	
-	
-	
-	method terminar() {
+	method pasarDeNivel(){
+		game.clear()
+		game.addVisual(new Fondo(image="youwin.png"))
+		niveles.pasarDeNivel()
 		
-		//game.clear()
-		game.addVisual(new Fondo(image="gameover.png"))
-		/*game.addVisual(personajePrincipal)
 		game.schedule(2500, {
 			game.clear()
-			game.addVisual(new Fondo(image="finNivel1.png"))
-			game.schedule(3000, {
-				game.clear()
-//				nivel2.configurate()
-			})
-		})¨*/
-	}
-		
+			niveles.nivel().configurate()
+		})
+	}		
 }
 
 
